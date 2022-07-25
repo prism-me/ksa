@@ -1,0 +1,62 @@
+.category-filters {
+  padding: 0 1rem;
+  @media #{$sm} {
+    flex-wrap: wrap;
+    padding: 0;
+  }
+  .Dropdown-root {
+    width: 48%;
+    @media #{$sm} {
+      width: 100%;
+      margin-bottom: 0.5rem;
+    }
+    .Dropdown-control {
+      border: 1px solid $primary-color;
+      color: $primary-color;
+      text-align: left;
+      border-radius: 4px;
+      @include padding-vertical(6, "px");
+      font-size: 15px;
+    }
+  }
+}
+
+.sort-filters {
+  align-items: center;
+  padding: 0 1rem;
+  @media #{$sm} {
+    padding: 0;
+  }
+  .Dropdown-root {
+    width: 59%;
+    @media #{$sm} {
+      width: 100%;
+    }
+    .Dropdown-control {
+      border: 1px solid $primary-color;
+      color: $primary-color;
+      text-align: left;
+      border-radius: 4px;
+      @include padding-vertical(6, "px");
+      font-size: 15px;
+    }
+    .Dropdown-menu{
+      text-align: left;
+    }
+  }
+  .item-count {
+    width: 39%;
+    font-size: 14px;
+    @media #{$sm} {
+      display: none;
+    }
+  }
+  .item-count-Arabic {
+    width: 39%;
+    font-size: 14px;
+    text-align: left !important;
+    @media #{$sm} {
+      display: none;
+    }
+  }
+}

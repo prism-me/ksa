@@ -1,0 +1,112 @@
+.cart-list {
+    padding-right: 30px;
+
+    .row {
+        margin-bottom: 30px;
+    }
+
+    .list_box {
+        .row {
+            padding-bottom: 30px;
+            border-bottom : 2px solid #eee;
+        }
+
+        .row:last-child {
+            border-bottom: none;
+        }
+
+        .product_qyt {
+            text-align: center;
+        }
+    }
+
+    .product_img {
+        border       : 1px solid #eee;
+        border-radius: 11px;
+        padding      : 10px;
+
+        img {
+            width: 100%;
+        }
+    }
+
+    .cart_list_detail {
+        h2 {
+            font-size    : 18px;
+            margin-bottom: 15px;
+        }
+
+        p {
+            font-size    : 14px;
+            margin-bottom: 10px;
+        }
+
+        .cart_list_price {
+            font-size  : 17px !important;
+            font-weight: 500;
+
+            span {
+                color                    : #ccc;
+                text-decoration          : line-through;
+                text-decoration-thickness: 2px;
+                margin-left              : 10px;
+                font-size                : 14px !important;
+            }
+        }
+
+        button {
+            background-color: #e65550;
+            color           : #ffffff;
+            font-weight     : 700;
+            width           : 180px;
+            box-shadow      : 0px 2px 5px #bbb;
+            text-transform  : capitalize;
+            margin-right    : 4%;
+            border          : 2px solid #e65550;
+            position        : absolute;
+            bottom          : 10px;
+        }
+
+        button.btn-theme.outline-bg.buy-now-btn.buy_cart.btn.btn-outline-undefined {
+            right: 0;
+        }
+    }
+
+    .order_action_div {
+        width  : 100%;
+        border : 1px solid #eee;
+        padding: 20px;
+
+        button {
+            background-color: #e65550;
+            color           : #ffffff;
+            font-weight     : 700;
+            width           : 45%;
+            box-shadow      : 0px 2px 5px #bbb;
+            text-transform  : capitalize;
+            margin          : 0 2.5%;
+            float           : left;
+        }
+    }
+
+    button.quantity-input__modifier.quantity-input__modifier--right {
+        width       : auto;
+        margin-right: 0;
+    }
+
+    button.quantity-input__modifier.quantity-input__modifier--left {
+        width: auto;
+    }
+
+    button.btn-theme.outline-bg.buy-now-btn.btn svg {
+        margin-left: 10px;
+    }
+
+    button.btn-theme.outline-bg.buy-now-btn.save_btn svg {
+        color: #fff;
+    }
+}
+
+.quantity-input input.quantity-input__screen {
+    border: 2px solid transparent;
+}

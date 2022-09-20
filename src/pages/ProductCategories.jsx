@@ -48,9 +48,7 @@ class ProductCategories extends Component {
 
   componentDidMount() {
     this.props.getCategories();
-    API.get(
-      `/filteredProduct/${null}/${null}/${"Recommended"}?page=all`
-    )
+    API.get(`/filteredProduct/${null}/${null}/${"Recommended"}?page=all`)
       .then((response) => {
         this.setState({
           recommendedProducts: response.data?.data,
@@ -58,10 +56,7 @@ class ProductCategories extends Component {
       })
       .then(() => {
         API.get(`/pages`).then((response) => {
-          if (
-            response.status === 200 ||
-            response.status === 201
-          ) {
+          if (response.status === 200 || response.status === 201) {
             let currentPage = response.data.find(
               (x) => x.slug === "categories"
             );
@@ -81,14 +76,13 @@ class ProductCategories extends Component {
       <div className="products-page">
         <Helmet>
           <title>
-            {this.state.currentPage?.meta_details?.title ||
-              constants.site_name}
+            {this.state.currentPage?.meta_details?.title || constants.site_name}
           </title>
           <meta
             name="description"
             content={
-              this.state.currentPage?.meta_details
-                ?.description || constants.seo_description
+              this.state.currentPage?.meta_details?.description ||
+              constants.seo_description
             }
           />
           <script type="application/ld+json">
@@ -109,17 +103,13 @@ class ProductCategories extends Component {
           categories={this.props.categories?.filter(
             (x) => x.parent_id === null
           )}
-          isArabic={
-            this.props.global?.activeLanguage === "ar"
-          }
+          isArabic={this.props.global?.activeLanguage === "ar"}
           hideTitle={true}
         />
         <ProductSlider
           products={this.state.recommendedProducts}
           language={this.props.global?.activeLanguage}
-          isArabic={
-            this.props.global?.activeLanguage === "ar"
-          }
+          isArabic={this.props.global?.activeLanguage === "ar"}
         />
       </div>
     );
@@ -129,11 +119,10 @@ class ProductCategories extends Component {
 const mapStateToProps = (state) => {
   return {
     products: state?.productReducer?.products,
-    categoryProducts:
-      state?.productReducer?.categoryProducts,
+    categoryProducts: state?.productReducer?.categoryProducts,
     totalProducts: state?.productReducer?.totalProducts,
     categories: state?.productReducer?.categories,
-    showSpinner: state?.globalReducer?.showSpinner,
+    // showSpinner: state?.globalReducer?.showSpinner,
     global: state?.globalReducer,
   };
 };
@@ -142,23 +131,8 @@ const mapDispatchToProps = (dispatch) => {
   return {
     getProducts: (page) => dispatch(getProducts(page)),
     getCategories: () => dispatch(getCategories()),
-    getCategoryProducts: (
-      category,
-      page,
-      subcategory,
-      filter
-    ) =>
-      dispatch(
-        getCategoryProducts(
-          category,
-          page,
-          subcategory,
-          filter
-        )
-      ),
+    getCategoryProducts: (category, page, subcategory, filter) =>
+      dispatch(getCategoryProducts(category, page, subcategory, filter)),
   };
 };
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ProductCategories);
+export default connect(mapStateToProps, mapDispatchToProps)(ProductCategories);

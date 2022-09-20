@@ -117,7 +117,7 @@ function Layout(props) {
           : "english-direction"
       }`}
     >
-      <div
+      {/* <div
         className={`${
           props.showSpinner ? "d-flex" : "d-none"
         } flex-column text-center align-items-center justify-content-center`}
@@ -130,7 +130,7 @@ function Layout(props) {
         }}
       >
         <ClipLoader color={"#e65550"} loading={true} size={80} />
-      </div>
+      </div> */}
       <Hidden mdUp>
         {/* <span onClick={toggleDrawer(true)}>{"OPEN"}</span> */}
         <nav className={classes.drawer}>
@@ -350,7 +350,7 @@ const mapStateToProps = (state) => {
     products: state?.productReducer?.products,
     totalProducts: state?.productReducer?.totalProducts,
     categories: state?.productReducer?.categories,
-    showSpinner: state?.globalReducer?.showSpinner,
+    // showSpinner: state?.globalReducer?.showSpinner,
     global: state.globalReducer,
   };
 };

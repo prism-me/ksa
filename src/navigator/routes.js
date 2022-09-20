@@ -1,33 +1,36 @@
-import Home from "../pages/Home";
-import Products from "../pages/Products";
-import ProductDetails from "../pages/ProductDetails";
-import About from "../pages/About";
-import Contact from "../pages/Contact";
-import Wishlist from "../pages/Wishlist";
-import UserProfile from "../pages/UserProfile";
-import MotherBabyWord from "../pages/MotherBabyWorld";
-import GoodToKnow from "../pages/GoodToKnow";
-import Video from "../pages/Video";
-import Pregnancy from "../pages/Pregnancy";
-import FAQ from "../pages/FAQ";
-import BreastFeedingAdvisor from "../pages/BreastFeedingAdvisor";
-import PostPregnancy from "../pages/PostPregnancy";
-import BabyCare from "../pages/BabyCare";
-import FirstTimeFather from "../pages/FirstTimeFather";
-import ArticleDetailPage from "../pages/ArticleDetailPage";
-import DisclosurePolicy from "../pages/DisclosurePolicy";
-import PrivacyProtection from "../pages/PrivacyProtection";
-import SocialMediaPolicy from "../pages/SocialMediaPolicy";
-import TermsOfUse from "../pages/TermsOfUse";
-import OfficialSocialMedia from "../pages/OfficialSocialMedia";
-import Subsidiaries from "../pages/Subsidiaries";
-import Sitemap from "../pages/Sitemap";
-import ProductCategories from "../pages/ProductCategories";
-import Blog from "../pages/Blog";
-import BlogDetailPage from "../pages/BlogDetailPage";
-import Cart from "../pages/Cart";
-import Checkout from "../pages/Checkout";
-import Order from "../pages/Order";
+import React, { lazy } from "react";
+const Home = lazy(() => import("../pages/Home"));
+const Products = lazy(() => import("../pages/Products"));
+const ProductDetails = lazy(() => import("../pages/ProductDetails"));
+const About = lazy(() => import("../pages/About"));
+const Contact = lazy(() => import("../pages/Contact"));
+const Wishlist = lazy(() => import("../pages/Wishlist"));
+const UserProfile = lazy(() => import("../pages/UserProfile"));
+const MotherBabyWord = lazy(() => import("../pages/MotherBabyWorld"));
+const GoodToKnow = lazy(() => import("../pages/GoodToKnow"));
+const Video = lazy(() => import("../pages/Video"));
+const Pregnancy = lazy(() => import("../pages/Pregnancy"));
+const FAQ = lazy(() => import("../pages/FAQ"));
+const BreastFeedingAdvisor = lazy(() =>
+  import("../pages/BreastFeedingAdvisor")
+);
+const PostPregnancy = lazy(() => import("../pages/PostPregnancy"));
+const BabyCare = lazy(() => import("../pages/BabyCare"));
+const FirstTimeFather = lazy(() => import("../pages/FirstTimeFather"));
+const ArticleDetailPage = lazy(() => import("../pages/ArticleDetailPage"));
+const DisclosurePolicy = lazy(() => import("../pages/DisclosurePolicy"));
+const PrivacyProtection = lazy(() => import("../pages/PrivacyProtection"));
+const SocialMediaPolicy = lazy(() => import("../pages/SocialMediaPolicy"));
+const TermsOfUse = lazy(() => import("../pages/TermsOfUse"));
+const OfficialSocialMedia = lazy(() => import("../pages/OfficialSocialMedia"));
+const Subsidiaries = lazy(() => import("../pages/Subsidiaries"));
+const Sitemap = lazy(() => import("../pages/Sitemap"));
+const ProductCategories = lazy(() => import("../pages/ProductCategories"));
+const Blog = lazy(() => import("../pages/Blog"));
+const BlogDetailPage = lazy(() => import("../pages/BlogDetailPage"));
+// import Cart from "../pages/Cart";
+const Checkout = lazy(() => import("../pages/Checkout"));
+const Order = lazy(() => import("../pages/Order"));
 
 export const routes = [
   {

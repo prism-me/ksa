@@ -11,23 +11,18 @@ import { API } from "../../../http/API";
 import { connect } from "react-redux";
 import { Helmet } from "react-helmet";
 
-
 function AboutUsTab(props) {
   const [aboutusData, setAboutusData] = useState([]);
   const [openVideo, setOpenVideo] = useState(false);
   const [currentPage, setCurrentPage] = useState(null);
   const researchRef = React.useRef(null);
   const videoRef = React.useRef(null);
-  const splitSrc =
-    aboutusData?.sectionTwo?.video_url?.split("/");
+  const splitSrc = aboutusData?.sectionTwo?.video_url?.split("/");
 
   useEffect(() => {
     API.get(`/pages`)
       .then((response) => {
-        if (
-          response.status === 200 ||
-          response.status === 201
-        ) {
+        if (response.status === 200 || response.status === 201) {
           // debugger;
           let currentPage = response.data.find(
             (x) => x.slug === "about-us-active"
@@ -36,9 +31,7 @@ function AboutUsTab(props) {
           API.get(`/all_widgets/${currentPage._id}`)
             .then((res) => {
               // debugger;
-              let widget_content =
-                res.data[res.data.length - 1]
-                  .widget_content;
+              let widget_content = res.data[res.data.length - 1].widget_content;
               setAboutusData(widget_content);
             })
             .catch((err) => console.log(err));
@@ -50,14 +43,31 @@ function AboutUsTab(props) {
   return (
     <div className="about-us-tab">
       <Helmet>
-        <title>{global?.activeLanguage === "ar" ? aboutusData?.arabic?.meta_details?.title : aboutusData?.meta_details?.title}</title>
-        <meta property="og:title" content={global?.activeLanguage === "ar" ? aboutusData?.arabic?.meta_details?.title : aboutusData?.meta_details?.title} />
+        <title>
+          {global?.activeLanguage === "ar"
+            ? aboutusData?.arabic?.meta_details?.title
+            : aboutusData?.meta_details?.title}
+        </title>
+        <meta
+          property="og:title"
+          content={
+            global?.activeLanguage === "ar"
+              ? aboutusData?.arabic?.meta_details?.title
+              : aboutusData?.meta_details?.title
+          }
+        />
         <meta
           name="description"
-          content={global?.activeLanguage === "ar" ? aboutusData?.arabic?.meta_details?.description : aboutusData?.meta_details?.description}
+          content={
+            global?.activeLanguage === "ar"
+              ? aboutusData?.arabic?.meta_details?.description
+              : aboutusData?.meta_details?.description
+          }
         />
         <script type="application/ld+json">
-          {global?.activeLanguage === "ar" ? aboutusData?.arabic?.meta_details?.schema_markup : aboutusData?.meta_details?.schema_markup}
+          {global?.activeLanguage === "ar"
+            ? aboutusData?.arabic?.meta_details?.schema_markup
+            : aboutusData?.meta_details?.schema_markup}
         </script>
       </Helmet>
 
@@ -72,12 +82,7 @@ function AboutUsTab(props) {
           <Col sm={4}>
             <div className="image-column">
               <div className="article-image">
-                <img
-                  src={
-                    aboutusData?.sectionOne?.featured_image
-                  }
-                  alt=""
-                />
+                <img src={aboutusData?.sectionOne?.featured_image} alt="" />
               </div>
             </div>
           </Col>
@@ -87,11 +92,11 @@ function AboutUsTab(props) {
               <p
                 className="description mt-sm-4"
                 dangerouslySetInnerHTML={{
-                  __html: `${global?.activeLanguage === "ar"
-                    ? aboutusData?.arabic?.sectionOne
-                      ?.content
-                    : aboutusData?.sectionOne?.content
-                    }`,
+                  __html: `${
+                    global?.activeLanguage === "ar"
+                      ? aboutusData?.arabic?.sectionOne?.content
+                      : aboutusData?.sectionOne?.content
+                  }`,
                 }}
               ></p>
               {/* <div
@@ -146,21 +151,18 @@ function AboutUsTab(props) {
               <div className="video-content">
                 <p
                   dangerouslySetInnerHTML={{
-                    __html: `${global?.activeLanguage === "ar"
-                      ? aboutusData?.arabic?.sectionTwo
-                        ?.content
-                      : aboutusData?.sectionTwo?.content
-                      }`,
+                    __html: `${
+                      global?.activeLanguage === "ar"
+                        ? aboutusData?.arabic?.sectionTwo?.content
+                        : aboutusData?.sectionTwo?.content
+                    }`,
                   }}
                 ></p>
               </div>
             </Col>
           </Row>
         </div>
-        <div
-          className="research-info-section"
-          ref={researchRef}
-        >
+        <div className="research-info-section" ref={researchRef}>
           <Row>
             <Col sm={{ span: 12 }}>
               {/* <Col sm={{ span: 10, offset: 2 }}> */}
@@ -175,18 +177,17 @@ function AboutUsTab(props) {
               {/* <Col sm={{ span: 10, offset: 2 }}> */}
               <div
                 // className="research-content"
-                className={`research-content ${props.language === "ar"
-                  ? "research-content-Arabic"
-                  : ""
-                  }`}
+                className={`research-content ${
+                  props.language === "ar" ? "research-content-Arabic" : ""
+                }`}
               >
                 <p
                   dangerouslySetInnerHTML={{
-                    __html: `${global?.activeLanguage === "ar"
-                      ? aboutusData?.arabic?.sectionThree
-                        ?.content
-                      : aboutusData?.sectionThree?.content
-                      }`,
+                    __html: `${
+                      global?.activeLanguage === "ar"
+                        ? aboutusData?.arabic?.sectionThree?.content
+                        : aboutusData?.sectionThree?.content
+                    }`,
                   }}
                 ></p>
               </div>
@@ -206,7 +207,7 @@ function AboutUsTab(props) {
 
 const mapStateToProps = (state) => {
   return {
-    showSpinner: state?.globalReducer?.showSpinner,
+    // showSpinner: state?.globalReducer?.showSpinner,
     global: state.globalReducer,
   };
 };

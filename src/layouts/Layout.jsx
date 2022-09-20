@@ -15,7 +15,6 @@ import ReactCountryFlag from "react-country-flag";
 import {
   getCategories,
   getProducts,
-  getPreSearchRecords,
 } from "../redux/products";
 import logo from "./../assets/images/logo.svg";
 import { types } from "../redux/global/types";
@@ -107,7 +106,6 @@ function Layout(props) {
 
   useEffect(() => {
     props.getCategories();
-    props.getPreSearchRecords();
     // props.setDefaultLanguage();
   }, []);
   const { global } = props;
@@ -317,7 +315,6 @@ const mapDispatchToProps = (dispatch) => {
   return {
     getProducts: (page) => dispatch(getProducts(page)),
     getCategories: () => dispatch(getCategories()),
-    getPreSearchRecords: () => dispatch(getPreSearchRecords()),
     logout: () =>
       dispatch({
         type: "LOGOUT",

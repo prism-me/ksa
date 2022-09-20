@@ -26,9 +26,3 @@ export function getCategoryProducts(category, page, subcategory, filter) {
     },
   };
 }
-
-export function getPreSearchRecords(page) {
-  return {
-    type: "GET_SEARCH_LIST_REQUEST",
-  };
-}

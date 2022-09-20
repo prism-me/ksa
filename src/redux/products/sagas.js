@@ -1,8 +1,4 @@
-import {
-  put,
-  takeLatest,
-  select,
-} from "redux-saga/effects";
+import { put, takeLatest, select } from "redux-saga/effects";
 // import { toast } from "react-toastify";
 import { types } from "./types";
 import * as service from "./service";
@@ -11,9 +7,7 @@ import { history } from "./../../history";
 
 function* getAllProducts(action) {
   try {
-    const result = yield service.getAllProducts(
-      action.payload.page
-    );
+    const result = yield service.getAllProducts(action.payload.page);
     if (result.status === 200) {
       if (action.payload.page === "all") {
         yield put({
@@ -127,45 +121,8 @@ function* getCategoryProducts(action) {
   }
 }
 
-function* getPreSearchRecords(action) {
-  try {
-    const result = yield service.getSearchRecords();
-    if (result.status === 200) {
-      yield put({
-        type: "GET_SEARCH_LIST_SUCCESS",
-        payload: {
-          searchData: result.data.data,
-        },
-      });
-    } else {
-      yield put({
-        type: "GET_SEARCH_LIST_FAILURE",
-      });
-    }
-  } catch (error) {
-    console.log(error);
-    yield put({
-      type: "GET_SEARCH_LIST_FAILURE",
-      payload: "There was some error",
-    });
-  }
-}
-
 export default function* productsWatcher() {
-  yield takeLatest(
-    types.GET_PRODUCTS_REQUEST,
-    getAllProducts
-  );
-  yield takeLatest(
-    types.GET_CATEGORIES_REQUEST,
-    getAllCategories
-  );
-  yield takeLatest(
-    types.GET_CATEGORY_PRODUCTS_REQUEST,
-    getCategoryProducts
-  );
-  yield takeLatest(
-    "GET_SEARCH_LIST_REQUEST",
-    getPreSearchRecords
-  );
+  yield takeLatest(types.GET_PRODUCTS_REQUEST, getAllProducts);
+  yield takeLatest(types.GET_CATEGORIES_REQUEST, getAllCategories);
+  yield takeLatest(types.GET_CATEGORY_PRODUCTS_REQUEST, getCategoryProducts);
 }

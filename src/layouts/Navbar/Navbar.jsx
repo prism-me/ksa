@@ -257,7 +257,6 @@ function MainNavbar(props) {
               />
               {showSearch ? (
                 <Searchbar
-                  searchData={props.searchData}
                   onClose={() => setShowSearch(false)}
                   language={props.global?.activeLanguage}
                 />
@@ -275,7 +274,6 @@ const mapStateToProps = (state) => {
     user: state.userReducer,
     products: state?.productReducer?.products,
     allProducts: state?.productReducer?.allProducts,
-    searchData: state?.productReducer?.searchData,
     totalProducts: state?.productReducer?.totalProducts,
     categories: state?.productReducer?.categories,
     global: state.globalReducer,

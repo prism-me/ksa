@@ -7,15 +7,8 @@ let initialState = {
   categoryProducts: [],
   categories: [],
   totalProducts: 0,
-  searchData: {
-    products: [],
-    categories: [],
-  },
 };
-export const productReducer = (
-  state = initialState,
-  action
-) => {
+export const productReducer = (state = initialState, action) => {
   switch (action.type) {
     case types.GET_PRODUCTS_SUCCESS:
       return {
@@ -28,11 +21,6 @@ export const productReducer = (
         ...state,
         allProducts: [...action.payload.products],
       };
-    case "GET_SEARCH_LIST_SUCCESS":
-      return {
-        ...state,
-        searchData: { ...action.payload.searchData },
-      };
     case "GET_WISHLIST_SUCCESS":
       return {
         ...state,
@@ -42,9 +30,7 @@ export const productReducer = (
       return {
         ...state,
         categories: [
-          ...action.payload.categories?.sort(
-            (a, b) => a.order - b.order
-          ),
+          ...action.payload.categories?.sort((a, b) => a.order - b.order),
         ],
       };
     case types.GET_CATEGORY_PRODUCTS_SUCCESS:

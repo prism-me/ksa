@@ -18,9 +18,9 @@ import { types } from "../redux/products/types";
 class Navigation extends Component {
   state = {
     loginModal: false,
-    allError : {}
+    allError: {},
   };
-  setLoginModal = (status) => { };
+  setLoginModal = (status) => {};
 
   render() {
     return (
@@ -38,7 +38,9 @@ class Navigation extends Component {
               language={global?.activeLanguage}
               onHide={() => this.props.history.goBack()}
               shiftToRegister={() => {
-                this.props.history.push(`/${this.props.global.activeLanguage}/register`);
+                this.props.history.push(
+                  `/${this.props.global.activeLanguage}/register`
+                );
                 // setRegisterModal(true);
               }}
             />
@@ -56,7 +58,9 @@ class Navigation extends Component {
               language={global?.activeLanguage}
               onHide={() => this.props.history.goBack()}
               shiftToRegister={() => {
-                this.props.history.push(`/${this.props.global.activeLanguage}/register`);
+                this.props.history.push(
+                  `/${this.props.global.activeLanguage}/register`
+                );
                 // setRegisterModal(true);
               }}
             />
@@ -74,7 +78,9 @@ class Navigation extends Component {
               onHide={() => this.props.history.goBack()}
               language={global?.activeLanguage}
               shiftToLogin={() => {
-                this.props.history.push(`/${this.props.global.activeLanguage}/login`);
+                this.props.history.push(
+                  `/${this.props.global.activeLanguage}/login`
+                );
               }}
               // allError = {this.state.allError}
             />
@@ -92,7 +98,9 @@ class Navigation extends Component {
               isPage={true}
               onHide={() => this.props.history.goBack()}
               shiftToLogin={() => {
-                this.props.history.push(`/${this.props.global.activeLanguage}/login`);
+                this.props.history.push(
+                  `/${this.props.global.activeLanguage}/login`
+                );
               }}
             />
           )}
@@ -148,7 +156,6 @@ const mapStateToProps = (state) => {
     user: state.userReducer,
     products: state?.productReducer?.products,
     allProducts: state?.productReducer?.allProducts,
-    searchData: state?.productReducer?.searchData,
     totalProducts: state?.productReducer?.totalProducts,
     categories: state?.productReducer?.categories,
     global: state.globalReducer,

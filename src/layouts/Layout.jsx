@@ -106,7 +106,9 @@ function Layout(props) {
     props.getCategories();
     // props.setDefaultLanguage();
   }, []);
+
   const { global } = props;
+
   return (
     <div
       className={`layout ${

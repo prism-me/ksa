@@ -4,15 +4,13 @@ import Pagination from "react-bootstrap/Pagination";
 // import PageItem from "react-bootstrap/PageItem";
 import GridItem from "../../../components/GridItem";
 // import { categoryProducts } from "../../../utils/data";
+import ClipLoader from "react-spinners/BounceLoader";
 
 const perPage = 12;
 
 export default function ProductGrid(props) {
-  const [paginationItems, setPaginationItems] =
-    useState(null);
-  const [activePage, setActivePage] = useState(
-    props.currentPage
-  );
+  const [paginationItems, setPaginationItems] = useState(null);
+  const [activePage, setActivePage] = useState(props.currentPage);
   // const [disableFirst, setDisableFirst] = useState(false);
   // const [disableLast, setDisableLast] = useState(false);
 
@@ -20,8 +18,7 @@ export default function ProductGrid(props) {
     let paginatedItems = [];
     let count = props.totalProducts / perPage;
     if (
-      (props.totalProducts > perPage &&
-        props.totalProducts % perPage > 0) ||
+      (props.totalProducts > perPage && props.totalProducts % perPage > 0) ||
       (count > 0 && count < 1)
     ) {
       ++count;
@@ -53,9 +50,7 @@ export default function ProductGrid(props) {
           key={index}
           active={index === props.currentPage}
           onClick={
-            index === activePage
-              ? null
-              : () => props.handlePageClick(index)
+            index === activePage ? null : () => props.handlePageClick(index)
           }
         >
           {index}
@@ -79,9 +74,7 @@ export default function ProductGrid(props) {
     paginatedItems.push(
       <Pagination.Last
         disabled={nextPage > parseInt(count)}
-        onClick={() =>
-          props.handlePageClick(parseInt(count))
-        }
+        onClick={() => props.handlePageClick(parseInt(count))}
       />
     );
     setPaginationItems(paginatedItems);
@@ -105,17 +98,11 @@ export default function ProductGrid(props) {
                 <GridItem
                   id={product._id}
                   route={product.route}
-                  name={
-                    props.isArabic
-                      ? product.arabic?.name
-                      : product.name
-                  }
+                  name={props.isArabic ? product.arabic?.name : product.name}
                   image={product.featured_img}
                   rating={product.rating}
                   avg_rating={product.avg_rating}
-                  rating_count={
-                    product.reviews?.length || 0
-                  }
+                  rating_count={product.reviews?.length || 0}
                   firstcry_link={product.firstcry_link}
                   isBanner={
                     // props.bannerType?.value !== "" ||
@@ -134,24 +121,41 @@ export default function ProductGrid(props) {
             ))
           ) : (
             <div className="d-flex p-5 w-100 justify-content-center align-items-center">
-              <p
-                style={{ color: "#aaa", fontSize: "20px" }}
-              >
-                {
-                  props.isArabic ?
-                    <em> سيتم تحديث المنتجات في هذه الفئة قريباً. ابقى على اطلاع!</em>
-                    :
-                    <em>  The products for this category will be updated soon. Stay Tuned! </em>
-                }
+              <p style={{ color: "#aaa", fontSize: "20px" }}>
+                {props.isArabic ? (
+                  <em>
+                    {" "}
+                    سيتم تحديث المنتجات في هذه الفئة قريباً. ابقى على اطلاع!
+                  </em>
+                ) : (
+                  <em>
+                    {" "}
+                    The products for this category will be updated soon. Stay
+                    Tuned!{" "}
+                  </em>
+                )}
               </p>
             </div>
           )}
+          {/* //   (
+          //   <div
+          //     className={`d-flex flex-column text-center align-items-center justify-content-center`}
+          //     style={{
+          //       // position: "absolute",
+          //       zIndex: 999,
+          //       height: "200px",
+          //       width: "100%",
+          //       background: "rgba(255,255,255,0.8)",
+          //       // background: "#fff",
+          //     }}
+          //   >
+          //     <ClipLoader color={"#e65550"} loading={true} size={80} />
+          //   </div>
+          // ) */}
         </Row>
         <div className="pagination-wrapper">
           {props.totalProducts > 0 && (
-            <Pagination>
-              {paginationItems?.map((x) => x)}
-            </Pagination>
+            <Pagination>{paginationItems?.map((x) => x)}</Pagination>
           )}
         </div>
       </Container>

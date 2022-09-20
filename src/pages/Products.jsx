@@ -758,7 +758,7 @@ class Products extends Component {
           style={{ position: "relative" }}
           ref={this.productsGridRef}
         >
-          <div
+          {/* <div
             className={`${
               this.props.showSpinner ? "d-flex" : "d-none"
             } flex-column text-center align-items-center justify-content-center`}
@@ -771,7 +771,7 @@ class Products extends Component {
             }}
           >
             <ClipLoader color={"#e65550"} loading={true} size={80} />
-          </div>
+          </div> */}
           <Container>
             <Row style={{ justifyContent: "space-between" }}>
               <Col sm={7}>
@@ -1117,7 +1117,7 @@ const mapStateToProps = (state) => {
     categoryProducts: state?.productReducer?.categoryProducts,
     totalProducts: state?.productReducer?.totalProducts,
     categories: state?.productReducer?.categories,
-    showSpinner: state?.globalReducer?.showSpinner,
+    // showSpinner: state?.globalReducer?.showSpinner,
     global: state.globalReducer,
   };
 };

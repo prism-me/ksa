@@ -42,21 +42,21 @@ function AboutTabsContainer(props) {
             ? constants?.site_content?.about_us_tab_heading.ar
             : constants?.site_content?.about_us_tab_heading.en
         );
-        props.setBreadCrumbs(global?.activeLanguage == 'en' ? 'Pigeon' : 'بيجون',
-            "/about"
-            //     `/${props.global.activeLanguage}/about`
-
+        props.setBreadCrumbs(
+          global?.activeLanguage == "en" ? "Pigeon" : "بيجون",
+          "/about"
+          //     `/${props.global.activeLanguage}/about`
         );
         break;
       case "pigeon-way":
         setCurrentTitle(
-            global?.activeLanguage === "ar"
-                ? constants?.site_content?.pigeon_way_tab_heading.ar
-                : constants?.site_content?.pigeon_way_tab_heading.en
+          global?.activeLanguage === "ar"
+            ? constants?.site_content?.pigeon_way_tab_heading.ar
+            : constants?.site_content?.pigeon_way_tab_heading.en
         );
         props.setBreadCrumbs(
-          global?.activeLanguage == 'en' ? 'Pigeon Way' : 'أسلوب بيجون',
-            "/about"
+          global?.activeLanguage == "en" ? "Pigeon Way" : "أسلوب بيجون",
+          "/about"
         );
         break;
       case "mission":
@@ -66,10 +66,11 @@ function AboutTabsContainer(props) {
             : constants?.site_content?.mission_vision.en
         );
         props.setBreadCrumbs(
-          global?.activeLanguage == 'en' ? 'Mission and Vision' : 'الرؤية والرسالة',
+          global?.activeLanguage == "en"
+            ? "Mission and Vision"
+            : "الرؤية والرسالة",
           "/about"
           //     `/${props.global.activeLanguage}/about?active=mission-vision`
-
         );
         break;
       case "logo":
@@ -78,9 +79,10 @@ function AboutTabsContainer(props) {
             ? constants?.site_content?.pigeon_logo_tab.ar
             : constants?.site_content?.pigeon_logo_tab.en
         );
-        props.setBreadCrumbs(global?.activeLanguage == 'en' ? 'Pigeon Logo' : 'شعار بيجون',
-            "/about"
-            //     `/${props.global.activeLanguage}/about?active=logo`
+        props.setBreadCrumbs(
+          global?.activeLanguage == "en" ? "Pigeon Logo" : "شعار بيجون",
+          "/about"
+          //     `/${props.global.activeLanguage}/about?active=logo`
         );
         break;
       case "message":
@@ -89,9 +91,10 @@ function AboutTabsContainer(props) {
             ? constants?.site_content?.top_message_tab.ar
             : constants?.site_content?.top_message_tab.en
         );
-        props.setBreadCrumbs(global?.activeLanguage == 'en' ? 'Top Message' : 'رسالة مهمة',
-            "/about"
-            //     `/${props.global.activeLanguage}/about?active=message`
+        props.setBreadCrumbs(
+          global?.activeLanguage == "en" ? "Top Message" : "رسالة مهمة",
+          "/about"
+          //     `/${props.global.activeLanguage}/about?active=message`
         );
         break;
       default:
@@ -112,20 +115,43 @@ function AboutTabsContainer(props) {
           activeKey={activeTab}
           onSelect={(name) => setActiveTab(name)}
         >
-          <Tab eventKey="about" title={global?.activeLanguage === "ar" ? "عن بيجون" : "About Us"} >
+          <Tab
+            eventKey="about"
+            title={global?.activeLanguage === "ar" ? "عن بيجون" : "About Us"}
+          >
             <AboutUsTab language={global?.activeLanguage} />
           </Tab>
-          <Tab eventKey="pigeon-way" title={props.language  === "ar" ? "أسلوب بيجون" : "Pigeon Way"}>
+          <Tab
+            eventKey="pigeon-way"
+            title={props.language === "ar" ? "أسلوب بيجون" : "Pigeon Way"}
+          >
             <PigeonWayTab language={global?.activeLanguage} />
           </Tab>
-          <Tab eventKey="mission" title={global?.activeLanguage === "ar" ? "الرؤية والرسالة" : "Mission & Vision "}>
+          <Tab
+            eventKey="mission"
+            title={
+              global?.activeLanguage === "ar"
+                ? "الرؤية والرسالة"
+                : "Mission & Vision "
+            }
+          >
             <MissionVisionTab />
           </Tab>
-          <Tab eventKey="logo" title={global?.activeLanguage === "ar" ? "شعار بيجون" : "Pigeon Logo"}>
+          <Tab
+            eventKey="logo"
+            title={
+              global?.activeLanguage === "ar" ? "شعار بيجون" : "Pigeon Logo"
+            }
+          >
             <PigeonLogo />
           </Tab>
-          <Tab eventKey="message" title={global?.activeLanguage === "ar" ? "رسالة مهمة" : "Top Message"}>
-            <TopMessageTab language={global?.activeLanguage}/>
+          <Tab
+            eventKey="message"
+            title={
+              global?.activeLanguage === "ar" ? "رسالة مهمة" : "Top Message"
+            }
+          >
+            <TopMessageTab language={global?.activeLanguage} />
           </Tab>
         </Tabs>
       </div>
@@ -231,4 +257,3 @@ const mapStateToProps = (state) => {
 };
 
 export default connect(mapStateToProps)(AboutTabsContainer);
-

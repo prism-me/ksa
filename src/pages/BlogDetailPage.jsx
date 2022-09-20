@@ -24,12 +24,12 @@ class ArticleDetailPage extends Component {
     activeArticle: null,
     breadCrumbItems: [
       {
-        text: this.props.global?.activeLanguage == 'en' ? "Home" : "الرئيسية",
+        text: this.props.global?.activeLanguage == "en" ? "Home" : "الرئيسية",
         active: false,
         link: "/",
       },
       {
-        text: this.props.global?.activeLanguage == 'en' ? "Blog" : "المدونة",
+        text: this.props.global?.activeLanguage == "en" ? "Blog" : "المدونة",
         active: false,
         link: `/${this.props.global?.activeLanguage}/blog`,
       },
@@ -82,7 +82,7 @@ class ArticleDetailPage extends Component {
     let blogRoute = this.props.match.params.id;
     const response = await API.get(`/blogs/${blogRoute}`);
     const blog = response.data;
-    this.setState({ activeArticle: blog })
+    this.setState({ activeArticle: blog });
     // debugger;
 
     // setting up breadcrumb items
@@ -106,16 +106,14 @@ class ArticleDetailPage extends Component {
   }
 
   render() {
-    const { articles, currentArticleIndex, activeArticle } =
-      this.state;
+    const { articles, currentArticleIndex, activeArticle } = this.state;
     const { global } = this.props;
 
     return (
       <div className="breast-feeding-advisor-page">
         <Helmet>
           <title>
-            {this.state.activeArticle?.meta_title ||
-              constants.site_name}
+            {this.state.activeArticle?.meta_title || constants.site_name}
           </title>
           <meta
             name="description"
@@ -132,19 +130,20 @@ class ArticleDetailPage extends Component {
         <AdvisorHeader />
         <BreadCrumbs
           breadCrumbItems={
-            this.props.global?.activeLanguage === 'en' ?
-              this.state.breadCrumbItemsEnglish :
-              this.state.breadCrumbItemsArabic
+            this.props.global?.activeLanguage === "en"
+              ? this.state.breadCrumbItemsEnglish
+              : this.state.breadCrumbItemsArabic
           }
           language={this.props.global?.activeLanguage}
         />
         <div ref={this.scrollPosRef} />
-        <BlogItemDetails blogItem={articlesList} />
+        <BlogItemDetails
+          blogItem={articlesList}
+          activeArticle={this.state.activeArticle}
+        />
 
         <MoreDetails
-          activeArticle={
-            this.state.activeArticle
-          }
+          activeArticle={this.state.activeArticle}
           currentCategorySlug={this.state.currentCategorySlug}
           previousLink={
             currentArticleIndex - 1 >= 0
@@ -162,8 +161,8 @@ class ArticleDetailPage extends Component {
                 ? articles[currentArticleIndex - 1]?.arabic?.title
                 : null
               : currentArticleIndex - 1 >= 0
-                ? articles[currentArticleIndex - 1]?.title
-                : null
+              ? articles[currentArticleIndex - 1]?.title
+              : null
           }
           nextTitle={
             global?.activeLanguage === "ar"
@@ -171,13 +170,14 @@ class ArticleDetailPage extends Component {
                 ? articles[currentArticleIndex + 1]?.arabic?.title
                 : null
               : currentArticleIndex + 1 < articles?.length
-                ? articles[currentArticleIndex + 1]?.title
-                : null
+              ? articles[currentArticleIndex + 1]?.title
+              : null
           }
           handlePreviousClick={(title) => {
             // this.setState({ currentArticleIndex: currentArticleIndex - 1 });
             this.props.history.push(
-              `/breastfeeding-advisor/${this.state.currentCategorySlug
+              `/breastfeeding-advisor/${
+                this.state.currentCategorySlug
               }/${title.replace(/\s+/g, "-")}`
             );
             this.scrollPosRef.current.scrollIntoView({
@@ -187,7 +187,8 @@ class ArticleDetailPage extends Component {
           handleNextClick={(title) => {
             // this.setState({ currentArticleIndex: currentArticleIndex + 1 });
             this.props.history.push(
-              `/breastfeeding-advisor/${this.state.currentCategorySlug
+              `/breastfeeding-advisor/${
+                this.state.currentCategorySlug
               }/${title.replace(/\s+/g, "-")}`
             );
             this.scrollPosRef.current.scrollIntoView({

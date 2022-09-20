@@ -15,6 +15,10 @@ API.interceptors.request.use(
 
       //perform the manipulation here and change the request object
       // alert("request called")
+      if (request.url.startsWith("/auth/filteredProduct")) {
+        // store.dispatch({ type: "SHOW_SPINNER" });
+        store.dispatch({ type: "EMPTY_PRODUCTS" });
+      }
     }
     return {
       ...request,

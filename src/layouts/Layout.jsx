@@ -12,10 +12,7 @@ import { useHistory } from "react-router-dom";
 import { connect } from "react-redux";
 import ClipLoader from "react-spinners/BounceLoader";
 import ReactCountryFlag from "react-country-flag";
-import {
-  getCategories,
-  getProducts,
-} from "../redux/products";
+import { getCategories, getProducts } from "../redux/products";
 import logo from "./../assets/images/logo.svg";
 import { types } from "../redux/global/types";
 import "./Layout.scss";
@@ -93,7 +90,7 @@ function Layout(props) {
       setVisible(
         (prevScrollPos > currentScrollPos &&
           prevScrollPos - currentScrollPos > 70) ||
-        currentScrollPos < 50
+          currentScrollPos < 50
       );
 
       setPrevScrollPos(currentScrollPos);
@@ -105,20 +102,23 @@ function Layout(props) {
   }, [prevScrollPos, visible]);
 
   useEffect(() => {
+    props.emptyProducts();
     props.getCategories();
     // props.setDefaultLanguage();
   }, []);
   const { global } = props;
   return (
     <div
-      className={`layout ${global?.activeLanguage === "ar"
-        ? "arabic-direction"
-        : "english-direction"
-        }`}
+      className={`layout ${
+        global?.activeLanguage === "ar"
+          ? "arabic-direction"
+          : "english-direction"
+      }`}
     >
       <div
-        className={`${props.showSpinner ? "d-flex" : "d-none"
-          } flex-column text-center align-items-center justify-content-center`}
+        className={`${
+          props.showSpinner ? "d-flex" : "d-none"
+        } flex-column text-center align-items-center justify-content-center`}
         style={{
           position: "absolute",
           zIndex: 99999,
@@ -154,7 +154,11 @@ function Layout(props) {
               <List component="nav" aria-label="main mailbox folders">
                 <ListItem button>
                   <ListItemText
-                    primary={global.activeLanguage === "en" ? "About Pigeon" : "حول بيجون"}
+                    primary={
+                      global.activeLanguage === "en"
+                        ? "About Pigeon"
+                        : "حول بيجون"
+                    }
                     onClick={() => {
                       history.push(`/${global.activeLanguage}/about`);
                       toggleDrawer(false);
@@ -164,10 +168,16 @@ function Layout(props) {
                 <ListItem button>
                   <ListItemText
                     onClick={() => {
-                      history.push(`/${global.activeLanguage}/mother-baby-products`);
+                      history.push(
+                        `/${global.activeLanguage}/mother-baby-products`
+                      );
                       toggleDrawer(false);
                     }}
-                    primary={global.activeLanguage === "en" ? "Our Products" : "منتجاتنا"}
+                    primary={
+                      global.activeLanguage === "en"
+                        ? "Our Products"
+                        : "منتجاتنا"
+                    }
                   />
                 </ListItem>
                 <ListItem button>
@@ -178,7 +188,11 @@ function Layout(props) {
                       );
                       toggleDrawer(false);
                     }}
-                    primary={global.activeLanguage === "en" ? "Mother & Baby World" : "عالم الأم والطفل"}
+                    primary={
+                      global.activeLanguage === "en"
+                        ? "Mother & Baby World"
+                        : "عالم الأم والطفل"
+                    }
                   />
                 </ListItem>
                 <ListItem button>
@@ -187,7 +201,11 @@ function Layout(props) {
                       history.push(`/${global.activeLanguage}/good-to-know`);
                       toggleDrawer(false);
                     }}
-                    primary={global.activeLanguage === "en" ? "Good to know" : "من الجيد أن تعلمي"}
+                    primary={
+                      global.activeLanguage === "en"
+                        ? "Good to know"
+                        : "من الجيد أن تعلمي"
+                    }
                   />
                 </ListItem>
                 <ListItem button>
@@ -198,27 +216,35 @@ function Layout(props) {
                       );
                       toggleDrawer(false);
                     }}
-                    primary={global.activeLanguage === "en" ? "Breastfeeding Advisor" : "مستشار الرضاعة الطبيعية"}
+                    primary={
+                      global.activeLanguage === "en"
+                        ? "Breastfeeding Advisor"
+                        : "مستشار الرضاعة الطبيعية"
+                    }
                   />
                 </ListItem>
-                {global.activeLanguage === "en" &&
+                {global.activeLanguage === "en" && (
                   <ListItem button>
                     <ListItemText
                       onClick={() => {
                         history.push(`/${global.activeLanguage}/blog`);
                         toggleDrawer(false);
                       }}
-                      primary={global.activeLanguage === "en" ? "Blog" : "المدونة"}
+                      primary={
+                        global.activeLanguage === "en" ? "Blog" : "المدونة"
+                      }
                     />
                   </ListItem>
-                }
+                )}
                 <ListItem button>
                   <ListItemText
                     onClick={() => {
                       history.push(`/${global.activeLanguage}/video`);
                       toggleDrawer(false);
                     }}
-                    primary={global.activeLanguage === "en" ? "Video" : "فيديوهات"}
+                    primary={
+                      global.activeLanguage === "en" ? "Video" : "فيديوهات"
+                    }
                   />
                 </ListItem>
                 <ListItem button>
@@ -227,7 +253,9 @@ function Layout(props) {
                       history.push(`/${global.activeLanguage}/contact`);
                       toggleDrawer(false);
                     }}
-                    primary={global.activeLanguage === "en" ? "Contact" : "تواصل معنا"}
+                    primary={
+                      global.activeLanguage === "en" ? "Contact" : "تواصل معنا"
+                    }
                   />
                 </ListItem>
                 <ListItem button>
@@ -236,11 +264,18 @@ function Layout(props) {
                       history.push(`/${global.activeLanguage}/profile`);
                       toggleDrawer(false);
                     }}
-                    primary={global.activeLanguage === "en" ? "Profile" : "ملف التعريف"}
+                    primary={
+                      global.activeLanguage === "en" ? "Profile" : "ملف التعريف"
+                    }
                   />
                 </ListItem>
                 <ListItem button>
-                  <h6>{props.global.activeLanguage === "en" ? "Language" : "اللغة"} : </h6>
+                  <h6>
+                    {props.global.activeLanguage === "en"
+                      ? "Language"
+                      : "اللغة"}{" "}
+                    :{" "}
+                  </h6>
                 </ListItem>
                 <ListItem button className="mob_lang_us">
                   <ListItemText
@@ -248,7 +283,11 @@ function Layout(props) {
                       props.setActiveLanguage("en");
                       toggleDrawer(false);
                     }}
-                    primary={props.global.activeLanguage === "en" ? "English" : "الإنجليزية"}
+                    primary={
+                      props.global.activeLanguage === "en"
+                        ? "English"
+                        : "الإنجليزية"
+                    }
                   />
                 </ListItem>
                 <ListItem button className="mob_lang_ar">
@@ -257,7 +296,11 @@ function Layout(props) {
                       props.setActiveLanguage("ar");
                       toggleDrawer(false);
                     }}
-                    primary={props.global.activeLanguage === "en" ? "العربية" : "العربية"}
+                    primary={
+                      props.global.activeLanguage === "en"
+                        ? "العربية"
+                        : "العربية"
+                    }
                   />
                 </ListItem>
                 {/* <div className="dropdown">
@@ -300,7 +343,6 @@ function Layout(props) {
   );
 }
 
-
 const mapStateToProps = (state) => {
   return {
     products: state?.productReducer?.products,
@@ -325,6 +367,10 @@ const mapDispatchToProps = (dispatch) => {
         payload: {
           language: language,
         },
+      }),
+    emptyProducts: () =>
+      dispatch({
+        type: "EMPTY_PRODUCTS",
       }),
   };
 };

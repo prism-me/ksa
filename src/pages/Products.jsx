@@ -29,28 +29,32 @@ import { Helmet } from "react-helmet";
 import { constants } from "../utils/constants";
 
 const optionStyle = {
-  color: "#666"
-}
+  color: "#666",
+};
 const selectedOptionStyle = {
   color: "#333",
-  backgroundColor: "#f2f9fc"
-}
+  backgroundColor: "#f2f9fc",
+};
 
 const selectStyle = {
-  width: "50%", border: "1px solid #e65550", color: "#e65550", height: 'calc(1.5em + 0.75rem + 5px) !important'
-}
+  width: "50%",
+  border: "1px solid #e65550",
+  color: "#e65550",
+  height: "calc(1.5em + 0.75rem + 5px) !important",
+};
 const selectStyle2 = {
-  width: "55%", border: "1px solid #e65550", color: "#e65550", height: 'calc(1.5em + 0.75rem + 5px) !important'
-}
+  width: "55%",
+  border: "1px solid #e65550",
+  color: "#e65550",
+  height: "calc(1.5em + 0.75rem + 5px) !important",
+};
 
 class Products extends Component {
   productsGridRef = React.createRef();
   state = {
     currentPage: 1,
     totalProducts: this.props.totalProducts || 0,
-    currentArticleIndex: Math.floor(
-      Math.random() * articleDetailsList.length
-    ),
+    currentArticleIndex: Math.floor(Math.random() * articleDetailsList.length),
     selectedCategory: null,
     selectedSubCategory: null,
 
@@ -167,14 +171,11 @@ class Products extends Component {
     ],
   };
 
-
   componentDidMount() {
     this.props.getCategories();
-    API.get(
-      `/filteredProduct/${null}/${null}/${"Recommended"}?page=all`
-    )
+    API.get(`/filteredProduct/${null}/${null}/${"Recommended"}?page=all`)
       .then((response) => {
-        this.setState({ recommendedProducts: response.data?.data, });
+        this.setState({ recommendedProducts: response.data?.data });
       })
       .then(() => {
         API.get(`/pages`).then((response) => {
@@ -186,21 +187,37 @@ class Products extends Component {
       })
       .catch((err) => console.log(err));
 
-    if (this.props.match.params.id && this.props.match.params.sub && this.props.match.params.sub !== "") {
-      this.props.getCategoryProducts(this.props.match.params.id, 1, this.props.match.params.sub);
-    } else if (this.props.match.params.id && this.props.match.params.id !== "") {
+    if (
+      this.props.match.params.id &&
+      this.props.match.params.sub &&
+      this.props.match.params.sub !== ""
+    ) {
+      this.props.getCategoryProducts(
+        this.props.match.params.id,
+        1,
+        this.props.match.params.sub
+      );
+    } else if (
+      this.props.match.params.id &&
+      this.props.match.params.id !== ""
+    ) {
       this.props.getCategoryProducts(this.props.match.params.id);
     } else {
       this.props.getProducts(this.state.currentPage);
     }
-    this.setState({ totalProducts: this.props.totalProducts, });
+    this.setState({ totalProducts: this.props.totalProducts });
   }
 
   componentDidUpdate(prevProps) {
     // debugger;
     if (this.props.products !== prevProps.products) {
       //filtering only parent categories
-      let categories = [...this.props.categories?.filter((x) => x.parent_id === null && !x.name.toLowerCase().includes("latest")),];
+      let categories = [
+        ...this.props.categories?.filter(
+          (x) =>
+            x.parent_id === null && !x.name.toLowerCase().includes("latest")
+        ),
+      ];
 
       //mapping for select dropdown with addition "ALL" category option
       // hard-coded first value "all" as its not coming from db
@@ -247,10 +264,7 @@ class Products extends Component {
       // handling subcategory route
       // *************************
 
-      if (
-        this.props.match.params.id &&
-        prevProps.match.params.sub
-      ) {
+      if (this.props.match.params.id && prevProps.match.params.sub) {
         // finding the parent category by its 'route' and then selecting its 'children' array which has its subcategories
         // we are doing this because we don't have any thing to compare and find just by route name directly
         let filteredCategory = this.props.categories?.find(
@@ -261,14 +275,15 @@ class Products extends Component {
 
         // checking if children exists and then mapping to populate subcategories dropdown
         if (filteredCategory?.children.length > 0) {
-          filteredSubcategoriesEnglish =
-            filteredCategory?.children?.map((x) => {
+          filteredSubcategoriesEnglish = filteredCategory?.children?.map(
+            (x) => {
               return {
                 value: x.route,
                 label: x.name,
                 order: x.order,
               };
-            });
+            }
+          );
         }
         filteredSubcategoriesEnglish.unshift({
           value: "all",
@@ -280,20 +295,18 @@ class Products extends Component {
 
         // checking if children exists and then mapping to populate subcategories dropdown
         if (filteredCategory?.children.length > 0) {
-          filteredSubcategoriesArabic =
-            filteredCategory?.children?.map((x) => {
-              return {
-                value: x.route,
-                label: x.arabic.name,
-                order: x.order,
-              };
-            });
+          filteredSubcategoriesArabic = filteredCategory?.children?.map((x) => {
+            return {
+              value: x.route,
+              label: x.arabic.name,
+              order: x.order,
+            };
+          });
         }
         filteredSubcategoriesArabic.unshift({
           value: "all",
           label: "الكل",
         });
-
 
         let paramCategory = categories.find(
           (x) => x.route === this.props.match.params.id
@@ -314,38 +327,35 @@ class Products extends Component {
         // setting selected category and filtered subcategories
         this.setState({
           subCategoriesEnglish:
-            filteredSubcategoriesEnglish?.sort(
-              (a, b) => a.order - b.order
-            ) || [],
+            filteredSubcategoriesEnglish?.sort((a, b) => a.order - b.order) ||
+            [],
           selectedSubCategoryEnglish: paramSubCategoryEnglish
             ? {
-              value: paramSubCategoryEnglish?.value,
-              label: paramSubCategoryEnglish?.label,
-            }
+                value: paramSubCategoryEnglish?.value,
+                label: paramSubCategoryEnglish?.label,
+              }
             : null,
           selectedCategoryEnglish: {
             value: paramCategory?.route,
             label: paramCategory?.name,
-          }
+          },
         });
 
         this.setState({
           subCategoriesArabic:
-            filteredSubcategoriesArabic?.sort(
-              (a, b) => a.order - b.order
-            ) || [],
+            filteredSubcategoriesArabic?.sort((a, b) => a.order - b.order) ||
+            [],
           selectedSubCategoryArabic: paramSubCategoryArabic
             ? {
-              value: paramSubCategoryArabic?.value,
-              label: paramSubCategoryArabic?.label,
-            }
+                value: paramSubCategoryArabic?.value,
+                label: paramSubCategoryArabic?.label,
+              }
             : null,
           selectedCategoryArabic: {
             value: paramCategory?.route,
             label: paramCategory?.arabic.name,
           },
         });
-
       }
 
       // *************************
@@ -364,18 +374,18 @@ class Products extends Component {
           (x) => x.route === this.props.match.params.id
         );
 
-
         // checking if children exists and then mapping to populate subcategories dropdown
         let filteredSubcategoriesEnglish;
         if (filteredCategory?.children.length > 0) {
-          filteredSubcategoriesEnglish =
-            filteredCategory?.children?.map((x) => {
+          filteredSubcategoriesEnglish = filteredCategory?.children?.map(
+            (x) => {
               return {
                 value: x.route,
                 label: x.name,
                 order: x.order,
               };
-            });
+            }
+          );
         }
         //!
         filteredSubcategoriesEnglish?.unshift({
@@ -385,14 +395,13 @@ class Products extends Component {
 
         let filteredSubcategoriesArabic;
         if (filteredCategory?.children.length > 0) {
-          filteredSubcategoriesArabic =
-            filteredCategory?.children?.map((x) => {
-              return {
-                value: x.route,
-                label: x.arabic.name,
-                order: x.order,
-              };
-            });
+          filteredSubcategoriesArabic = filteredCategory?.children?.map((x) => {
+            return {
+              value: x.route,
+              label: x.arabic.name,
+              order: x.order,
+            };
+          });
         }
         //!
         filteredSubcategoriesArabic?.unshift({
@@ -407,9 +416,8 @@ class Products extends Component {
         // setting selected category and filtered subcategories
         this.setState({
           subCategoriesEnglish:
-            filteredSubcategoriesEnglish?.sort(
-              (a, b) => a.order - b.order
-            ) || [],
+            filteredSubcategoriesEnglish?.sort((a, b) => a.order - b.order) ||
+            [],
           selectedSubCategoryEnglish: null,
           selectedCategoryEnglish: {
             value: paramCategory?.route,
@@ -419,50 +427,42 @@ class Products extends Component {
 
         this.setState({
           subCategoriesArabic:
-            filteredSubcategoriesArabic?.sort(
-              (a, b) => a.order - b.order
-            ) || [],
+            filteredSubcategoriesArabic?.sort((a, b) => a.order - b.order) ||
+            [],
           selectedSubCategoryArabic: null,
           selectedCategoryArabic: {
             value: paramCategory?.route,
             label: paramCategory?.arabic.name,
           },
         });
-
       }
     }
 
     // handle category route update issue
     if (
-      this.props.match.params.id !==
-      prevProps.match.params.id &&
+      this.props.match.params.id !== prevProps.match.params.id &&
       !this.props.match.params.sub
     ) {
-      this.props.getCategoryProducts(
-        this.props.match.params.id
-      );
+      this.props.getCategoryProducts(this.props.match.params.id);
     }
 
     //setting products if different
     if (this.props.products !== prevProps.products) {
       this.setState({
-        products: this.props.products?.sort(
-          (a, b) => a.order - b.order
-        ),
+        products: this.props.products?.sort((a, b) => a.order - b.order),
       });
     }
-    if (
-      this.props.totalProducts !== prevProps.totalProducts
-    ) {
+    if (this.props.totalProducts !== prevProps.totalProducts) {
       this.setState({
         totalProducts: this.props.totalProducts,
       });
     }
   }
-
+  componentWillUnmount() {
+    this.props.emptyProducts();
+  }
   handleCategoryChange = (category) => {
-
-    category = JSON.parse(category.target.value)
+    category = JSON.parse(category.target.value);
 
     let filteredCategory;
     let filteredSubcategoriesEnglish = [];
@@ -472,14 +472,13 @@ class Products extends Component {
         (x) => x.route === category.value
       );
       if (filteredCategory?.children?.length > 0) {
-        filteredSubcategoriesEnglish =
-          filteredCategory?.children?.map((x) => {
-            return {
-              value: x.route,
-              label: x.name,
-              order: x.order,
-            };
-          });
+        filteredSubcategoriesEnglish = filteredCategory?.children?.map((x) => {
+          return {
+            value: x.route,
+            label: x.name,
+            order: x.order,
+          };
+        });
       }
       filteredSubcategoriesEnglish?.unshift({
         value: "all",
@@ -487,14 +486,13 @@ class Products extends Component {
       });
 
       if (filteredCategory?.children?.length > 0) {
-        filteredSubcategoriesArabic =
-          filteredCategory?.children?.map((x) => {
-            return {
-              value: x.route,
-              label: x.arabic.name,
-              order: x.order,
-            };
-          });
+        filteredSubcategoriesArabic = filteredCategory?.children?.map((x) => {
+          return {
+            value: x.route,
+            label: x.arabic.name,
+            order: x.order,
+          };
+        });
       }
       filteredSubcategoriesArabic?.unshift({
         value: "all",
@@ -508,26 +506,19 @@ class Products extends Component {
       this.setState({
         selectedCategoryEnglish: category,
         subCategoriesEnglish: filteredSubcategoriesEnglish
-          ? filteredSubcategoriesEnglish?.sort(
-            (a, b) => a.order - b.order
-          )
+          ? filteredSubcategoriesEnglish?.sort((a, b) => a.order - b.order)
           : [],
         selectedSubCategoryEnglish: null,
       });
       this.setState({
         selectedCategoryArabic: category,
         subCategoriesArabic: filteredSubcategoriesArabic
-          ? filteredSubcategoriesArabic?.sort(
-            (a, b) => a.order - b.order
-          )
+          ? filteredSubcategoriesArabic?.sort((a, b) => a.order - b.order)
           : [],
         selectedSubCategoryArabic: null,
       });
-
     } else {
-      this.props.history.push(
-        `/${this.props.global.activeLanguage}/products`
-      );
+      this.props.history.push(`/${this.props.global.activeLanguage}/products`);
       this.props.getProducts(this.state.currentPage);
       this.setState({
         selectedCategoryEnglish: category,
@@ -543,12 +534,17 @@ class Products extends Component {
   };
 
   handleSubCategoryChange = (subcategory) => {
-    subcategory = JSON.parse(subcategory.target.value)
-    const { selectedCategoryEnglish, selectedCategoryArabic, selectedSortingEnglish, selectedSortingArabic } =
-      this.state;
+    subcategory = JSON.parse(subcategory.target.value);
+    const {
+      selectedCategoryEnglish,
+      selectedCategoryArabic,
+      selectedSortingEnglish,
+      selectedSortingArabic,
+    } = this.state;
     if (subcategory.value === "all") {
       this.props.getCategoryProducts(
-        selectedCategoryEnglish?.value, 1,
+        selectedCategoryEnglish?.value,
+        1,
         null,
         selectedSortingEnglish?.value || null
       );
@@ -578,7 +574,8 @@ class Products extends Component {
 
     if (subcategory.value === "all") {
       this.props.getCategoryProducts(
-        selectedCategoryArabic?.value, 1,
+        selectedCategoryArabic?.value,
+        1,
         null,
         selectedSortingArabic?.value || null
       );
@@ -613,9 +610,7 @@ class Products extends Component {
       (x) => x.category === cat_id
     );
     if (sub_id) {
-      products = products.filter(
-        (x) => x.sub_category === sub_id
-      );
+      products = products.filter((x) => x.sub_category === sub_id);
     }
     this.setState({
       products,
@@ -625,7 +620,7 @@ class Products extends Component {
   };
 
   handleSortFilter = (sortFilter) => {
-    sortFilter = JSON.parse(sortFilter.target.value)
+    sortFilter = JSON.parse(sortFilter.target.value);
 
     //destructuring state variables
     const {
@@ -676,43 +671,62 @@ class Products extends Component {
     // }
     this.setState({ selectedSortingEnglish: sortFilter });
     this.setState({ selectedSortingArabic: sortFilter });
-
   };
 
   getPropertyValue(key, isArabic) {
-    if (this.state.selectedSubCategoryEnglish?.value &&
-      this.props.categories?.find((x) => x.route === this.state.selectedSubCategoryEnglish?.value)?.short_description !== "<p>null</p>" &&
+    if (
+      this.state.selectedSubCategoryEnglish?.value &&
+      this.props.categories?.find(
+        (x) => x.route === this.state.selectedSubCategoryEnglish?.value
+      )?.short_description !== "<p>null</p>" &&
       this.state.selectedSubCategoryArabic?.value &&
-      this.props.categories?.find((x) => x.route === this.state.selectedSubCategoryArabic?.value)?.short_description !== "<p>null</p>") {
-      return isArabic
-        ? this.props.categories?.find((x) => x.route === this.state.selectedSubCategoryArabic?.value)?.arabic?.[key]
-        : this.props.categories?.find((x) => x.route === this.state.selectedSubCategoryEnglish?.value)?.[key];
-    } else if (this.state.selectedSubCategoryEnglish?.value &&
-      this.props.categories?.find((x) => x.route === this.state.selectedSubCategoryEnglish?.value)?.short_description === "<p>null</p>" &&
-      this.state.selectedSubCategoryArabic?.value &&
-      this.props.categories?.find((x) => x.route === this.state.selectedSubCategoryArabic?.value)?.short_description === "<p>null</p>") {
-      return isArabic
-        ? this.props.categories?.find((x) => x.route === this.state.selectedCategoryArabic?.value)?.arabic?.[key]
-        : this.props.categories?.find((x) => x.route === this.state.selectedCategoryEnglish?.value)?.[key];
-    } else if (this.state.selectedCategoryEnglish?.value && this.state.selectedCategoryEnglish?.value !== "all" &&
-      this.state.selectedCategoryArabic?.value && this.state.selectedCategoryArabic?.value !== "all") {
+      this.props.categories?.find(
+        (x) => x.route === this.state.selectedSubCategoryArabic?.value
+      )?.short_description !== "<p>null</p>"
+    ) {
       return isArabic
         ? this.props.categories?.find(
-          (x) =>
-            x.route === this.state.selectedCategoryArabic?.value
-        )?.arabic?.[key]
+            (x) => x.route === this.state.selectedSubCategoryArabic?.value
+          )?.arabic?.[key]
         : this.props.categories?.find(
-          (x) =>
-            x.route === this.state.selectedCategoryEnglish?.value
-        )?.[key];
+            (x) => x.route === this.state.selectedSubCategoryEnglish?.value
+          )?.[key];
+    } else if (
+      this.state.selectedSubCategoryEnglish?.value &&
+      this.props.categories?.find(
+        (x) => x.route === this.state.selectedSubCategoryEnglish?.value
+      )?.short_description === "<p>null</p>" &&
+      this.state.selectedSubCategoryArabic?.value &&
+      this.props.categories?.find(
+        (x) => x.route === this.state.selectedSubCategoryArabic?.value
+      )?.short_description === "<p>null</p>"
+    ) {
+      return isArabic
+        ? this.props.categories?.find(
+            (x) => x.route === this.state.selectedCategoryArabic?.value
+          )?.arabic?.[key]
+        : this.props.categories?.find(
+            (x) => x.route === this.state.selectedCategoryEnglish?.value
+          )?.[key];
+    } else if (
+      this.state.selectedCategoryEnglish?.value &&
+      this.state.selectedCategoryEnglish?.value !== "all" &&
+      this.state.selectedCategoryArabic?.value &&
+      this.state.selectedCategoryArabic?.value !== "all"
+    ) {
+      return isArabic
+        ? this.props.categories?.find(
+            (x) => x.route === this.state.selectedCategoryArabic?.value
+          )?.arabic?.[key]
+        : this.props.categories?.find(
+            (x) => x.route === this.state.selectedCategoryEnglish?.value
+          )?.[key];
     } else {
       return defaultContentProducts[key];
     }
   }
 
-
   render() {
-
     const { global } = this.props;
     return (
       <div className="products-page">
@@ -724,15 +738,13 @@ class Products extends Component {
           <meta
             name="description"
             content={
-              this.state.productsPage?.meta_details
-                ?.description || constants.seo_description
+              this.state.productsPage?.meta_details?.description ||
+              constants.seo_description
             }
           />
-           <link rel="canonical" href={window.location.href} />
+          <link rel="canonical" href={window.location.href} />
         </Helmet>
-        <ProductHeader
-          language={this.props.activeLanguage}
-        />
+        <ProductHeader language={this.props.activeLanguage} />
         <BreadCrumbs
           breadCrumbItems={
             this.props.global?.activeLanguage === "en"
@@ -747,8 +759,9 @@ class Products extends Component {
           ref={this.productsGridRef}
         >
           <div
-            className={`${this.props.showSpinner ? "d-flex" : "d-none"
-              } flex-column text-center align-items-center justify-content-center`}
+            className={`${
+              this.props.showSpinner ? "d-flex" : "d-none"
+            } flex-column text-center align-items-center justify-content-center`}
             style={{
               position: "absolute",
               zIndex: 999,
@@ -757,22 +770,16 @@ class Products extends Component {
               background: "rgba(255,255,255,0.8)",
             }}
           >
-            <ClipLoader
-              color={"#e65550"}
-              loading={true}
-              size={80}
-            />
+            <ClipLoader color={"#e65550"} loading={true} size={80} />
           </div>
           <Container>
-            <Row
-              style={{ justifyContent: "space-between" }}
-            >
+            <Row style={{ justifyContent: "space-between" }}>
               <Col sm={7}>
                 <div
                   className="d-flex category-filters"
                   style={{
                     justifyContent: "space-between",
-                    columnGap: "30px"
+                    columnGap: "30px",
                   }}
                 >
                   {/* <Dropdown
@@ -794,26 +801,59 @@ class Products extends Component {
                     }
                     style={{ width: "50%" }}
                   /> */}
-                  <select style={selectStyle} onChange={this.handleCategoryChange}>
+                  <select
+                    style={selectStyle}
+                    onChange={this.handleCategoryChange}
+                  >
                     <option value="all" disabled selected>
-                      {global?.activeLanguage === 'en'
-                        ? this.state.categoryPlaceholderEnglish : this.state.categoryPlaceholderArabic}
+                      {global?.activeLanguage === "en"
+                        ? this.state.categoryPlaceholderEnglish
+                        : this.state.categoryPlaceholderArabic}
                     </option>
-                    {global?.activeLanguage === 'en'
-                      ? (
-                        // console.log(this.state.subCategoriesEnglish,)
+                    {global?.activeLanguage === "en"
+                      ? // console.log(this.state.subCategoriesEnglish,)
                         this.state.categoriesEnglish?.map((data) => {
-                          let selectedCat = this.state.selectedCategoryEnglish?.value == data.value ? "selected" : ""
-                          return <option value={JSON.stringify(data)} selectedCat style={this.state.selectedCategoryEnglish?.value == data.value ? selectedOptionStyle : optionStyle}>{data.label}</option>
+                          let selectedCat =
+                            this.state.selectedCategoryEnglish?.value ==
+                            data.value
+                              ? "selected"
+                              : "";
+                          return (
+                            <option
+                              value={JSON.stringify(data)}
+                              selectedCat
+                              style={
+                                this.state.selectedCategoryEnglish?.value ==
+                                data.value
+                                  ? selectedOptionStyle
+                                  : optionStyle
+                              }
+                            >
+                              {data.label}
+                            </option>
+                          );
                         })
-                      ) :
-                      (
-                        this.state.categoriesArabic?.map((data) => {
-                          let selectedCat = this.state.selectedCategoryArabic?.value == data.value ? "selected" : ""
-                          return <option value={JSON.stringify(data)} selectedCat style={this.state.selectedCategoryArabic?.value == data.value ? selectedOptionStyle : optionStyle}>{data.label}</option>
-                        })
-                      )
-                    }
+                      : this.state.categoriesArabic?.map((data) => {
+                          let selectedCat =
+                            this.state.selectedCategoryArabic?.value ==
+                            data.value
+                              ? "selected"
+                              : "";
+                          return (
+                            <option
+                              value={JSON.stringify(data)}
+                              selectedCat
+                              style={
+                                this.state.selectedCategoryArabic?.value ==
+                                data.value
+                                  ? selectedOptionStyle
+                                  : optionStyle
+                              }
+                            >
+                              {data.label}
+                            </option>
+                          );
+                        })}
                   </select>
 
                   {/* <Dropdown
@@ -834,28 +874,60 @@ class Products extends Component {
                         : this.state.subCategoryPlaceholderArabic
                     }
                   /> */}
-                  <select style={selectStyle} onChange={this.handleSubCategoryChange}>
+                  <select
+                    style={selectStyle}
+                    onChange={this.handleSubCategoryChange}
+                  >
                     <option value="all" disabled selected>
-                      {global?.activeLanguage === 'en'
-                        ? "Select Subcategory" : "يرجى اختيار الفئة الفرعية"}
+                      {global?.activeLanguage === "en"
+                        ? "Select Subcategory"
+                        : "يرجى اختيار الفئة الفرعية"}
                     </option>
-                    {global?.activeLanguage === 'en'
-                      ? (
-                        // console.log(this.state.subCategoriesEnglish,)
+                    {global?.activeLanguage === "en"
+                      ? // console.log(this.state.subCategoriesEnglish,)
                         this.state.subCategoriesEnglish?.map((data) => {
-                          let selectedSubCat = this.state.selectedSubCategoryEnglish?.value == data.value ? "selected" : ""
-                          return <option value={JSON.stringify(data)} selectedSubCat style={this.state.selectedSubCategoryEnglish?.value == data.value ? selectedOptionStyle : optionStyle}>{data.label}</option>
+                          let selectedSubCat =
+                            this.state.selectedSubCategoryEnglish?.value ==
+                            data.value
+                              ? "selected"
+                              : "";
+                          return (
+                            <option
+                              value={JSON.stringify(data)}
+                              selectedSubCat
+                              style={
+                                this.state.selectedSubCategoryEnglish?.value ==
+                                data.value
+                                  ? selectedOptionStyle
+                                  : optionStyle
+                              }
+                            >
+                              {data.label}
+                            </option>
+                          );
                         })
-                      ) :
-                      (
-                        this.state.subCategoriesArabic.map((data) => {
-                          let selectedSubCat = this.state.selectedSubCategoryArabic?.value == data.value ? "selected" : ""
-                          return <option value={JSON.stringify(data)} selectedSubCat style={this.state.selectedSubCategoryArabic?.value == data.value ? selectedOptionStyle : optionStyle}>{data.label}</option>
-                        })
-                      )
-                    }
+                      : this.state.subCategoriesArabic.map((data) => {
+                          let selectedSubCat =
+                            this.state.selectedSubCategoryArabic?.value ==
+                            data.value
+                              ? "selected"
+                              : "";
+                          return (
+                            <option
+                              value={JSON.stringify(data)}
+                              selectedSubCat
+                              style={
+                                this.state.selectedSubCategoryArabic?.value ==
+                                data.value
+                                  ? selectedOptionStyle
+                                  : optionStyle
+                              }
+                            >
+                              {data.label}
+                            </option>
+                          );
+                        })}
                   </select>
-
                 </div>
               </Col>
               <Col sm={4}>
@@ -866,10 +938,16 @@ class Products extends Component {
                   }}
                 >
                   <span
-                    className={`item-count text-secondary text-right small ${this.props.global?.activeLanguage === "ar" ? "item-count-Arabic" : ""
-                      }`}
+                    className={`item-count text-secondary text-right small ${
+                      this.props.global?.activeLanguage === "ar"
+                        ? "item-count-Arabic"
+                        : ""
+                    }`}
                   >
-                    {this.state.totalProducts || 0} {this.props.global?.activeLanguage === "en" ? 'Items' : 'الاصناف'}
+                    {this.state.totalProducts || 0}{" "}
+                    {this.props.global?.activeLanguage === "en"
+                      ? "Items"
+                      : "الاصناف"}
                   </span>
                   {/* <Dropdown
                     options={
@@ -892,26 +970,55 @@ class Products extends Component {
 
                   <select style={selectStyle2} onChange={this.handleSortFilter}>
                     <option value="all" disabled selected>
-                      {global?.activeLanguage === 'en'
-                        ? "Select an option" : "حدد إختيار"}
+                      {global?.activeLanguage === "en"
+                        ? "Select an option"
+                        : "حدد إختيار"}
                     </option>
-                    {global?.activeLanguage === 'en'
-                      ? (
-                        // console.log(this.state.subCategoriesEnglish,)
+                    {global?.activeLanguage === "en"
+                      ? // console.log(this.state.subCategoriesEnglish,)
                         this.state.sortingListEnglish?.map((data) => {
-                          let selectedSort = this.state.selectedSortingEnglish?.value == data.value ? "selected" : ""
-                          return <option value={JSON.stringify(data)} selectedSort style={this.state.selectedSortingEnglish?.value == data.value ? selectedOptionStyle : optionStyle}>{data.label}</option>
+                          let selectedSort =
+                            this.state.selectedSortingEnglish?.value ==
+                            data.value
+                              ? "selected"
+                              : "";
+                          return (
+                            <option
+                              value={JSON.stringify(data)}
+                              selectedSort
+                              style={
+                                this.state.selectedSortingEnglish?.value ==
+                                data.value
+                                  ? selectedOptionStyle
+                                  : optionStyle
+                              }
+                            >
+                              {data.label}
+                            </option>
+                          );
                         })
-                      ) :
-                      (
-                        this.state.sortingListArabic?.map((data) => {
-                          let selectedSort = this.state.selectedSortingEnglish?.value == data.value ? "selected" : ""
-                          return <option value={JSON.stringify(data)} selectedSort style={this.state.selectedSortingArabic?.value == data.value ? selectedOptionStyle : optionStyle}>{data.label}</option>
-                        })
-                      )
-                    }
+                      : this.state.sortingListArabic?.map((data) => {
+                          let selectedSort =
+                            this.state.selectedSortingEnglish?.value ==
+                            data.value
+                              ? "selected"
+                              : "";
+                          return (
+                            <option
+                              value={JSON.stringify(data)}
+                              selectedSort
+                              style={
+                                this.state.selectedSortingArabic?.value ==
+                                data.value
+                                  ? selectedOptionStyle
+                                  : optionStyle
+                              }
+                            >
+                              {data.label}
+                            </option>
+                          );
+                        })}
                   </select>
-
                 </div>
               </Col>
             </Row>
@@ -939,7 +1046,7 @@ class Products extends Component {
                 this.state.selectedCategoryEnglish?.value,
                 currentPage,
                 this.state.selectedSubCategoryEnglish?.value,
-                this.state.selectedSortingEnglish?.value,
+                this.state.selectedSortingEnglish?.value
               );
             } else if (
               this.state.selectedSortingEnglish?.value !== null &&
@@ -952,7 +1059,7 @@ class Products extends Component {
 
                 currentPage,
                 this.state.selectedSubCategoryEnglish?.value,
-                this.state.selectedSortingEnglish?.value,
+                this.state.selectedSortingEnglish?.value
               );
             } else {
               this.props.getProducts(currentPage);
@@ -964,18 +1071,33 @@ class Products extends Component {
           }}
         />
         <VideoSection
-          videoTitle={this.getPropertyValue("videoTitle", this.props.global?.activeLanguage === "ar")}
+          videoTitle={this.getPropertyValue(
+            "videoTitle",
+            this.props.global?.activeLanguage === "ar"
+          )}
           videoLink={this.getPropertyValue("video_link")}
-          videoDescription={this.getPropertyValue("video_description", this.props.global?.activeLanguage === "ar")}
+          videoDescription={this.getPropertyValue(
+            "video_description",
+            this.props.global?.activeLanguage === "ar"
+          )}
           activeLanguage={this.props.global?.activeLanguage}
           productUrl={`/${this.props.global.activeLanguage}/products`}
         />
         <ProductDetails
-          heading={this.getPropertyValue("name", this.props.global?.activeLanguage === "ar")}
+          heading={this.getPropertyValue(
+            "name",
+            this.props.global?.activeLanguage === "ar"
+          )}
           image={this.getPropertyValue("featured_img", false)}
-          text={this.getPropertyValue("short_description", this.props.global?.activeLanguage === "ar")}
+          text={this.getPropertyValue(
+            "short_description",
+            this.props.global?.activeLanguage === "ar"
+          )}
           productImage={this.getPropertyValue("banner_images_list", false)?.[0]}
-          detailText={this.getPropertyValue("long_description", this.props.global?.activeLanguage === "ar")}
+          detailText={this.getPropertyValue(
+            "long_description",
+            this.props.global?.activeLanguage === "ar"
+          )}
           activeLanguage={this.props.global?.activeLanguage}
           productUrl={`/${this.props.global.activeLanguage}/products`}
         />
@@ -992,8 +1114,7 @@ class Products extends Component {
 const mapStateToProps = (state) => {
   return {
     products: state?.productReducer?.products,
-    categoryProducts:
-      state?.productReducer?.categoryProducts,
+    categoryProducts: state?.productReducer?.categoryProducts,
     totalProducts: state?.productReducer?.totalProducts,
     categories: state?.productReducer?.categories,
     showSpinner: state?.globalReducer?.showSpinner,
@@ -1004,24 +1125,10 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     getProducts: (page) => dispatch(getProducts(page)),
+    emptyProducts: () => dispatch({ type: "EMPTY_PRODUCTS" }),
     getCategories: () => dispatch(getCategories()),
-    getCategoryProducts: (
-      category,
-      page,
-      subcategory,
-      filter
-    ) =>
-      dispatch(
-        getCategoryProducts(
-          category,
-          page,
-          subcategory,
-          filter
-        )
-      ),
+    getCategoryProducts: (category, page, subcategory, filter) =>
+      dispatch(getCategoryProducts(category, page, subcategory, filter)),
   };
 };
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Products);
+export default connect(mapStateToProps, mapDispatchToProps)(Products);

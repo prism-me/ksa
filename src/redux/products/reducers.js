@@ -45,6 +45,8 @@ export const productReducer = (state = initialState, action) => {
         ...state,
         categoryProducts: [...action.payload.products],
       };
+    case "EMPTY_PRODUCTS":
+      return { ...state, products: [], totalProducts: 0 };
     default: {
       return state;
     }

@@ -4,9 +4,18 @@ import "./App.scss";
 import Layout from "./layouts/Layout";
 import Navigation from "./navigator/Navigation";
 import ScrollToTop from "./utils/ScrollToTop";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchPages } from "./redux/pages/pagesActions";
 import ClipLoader from "react-spinners/BounceLoader";
 
-function App() {
+function App(props) {
+  const pages = useSelector((state) => state.allPages.pages);
+  const dispatch = useDispatch();
+
+  React.useEffect(() => {
+    if (pages && pages.length === 0) dispatch(fetchPages());
+  }, [pages]);
+
   return (
     <BrowserRouter>
       <Suspense

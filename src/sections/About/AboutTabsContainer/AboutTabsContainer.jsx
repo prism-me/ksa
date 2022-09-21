@@ -7,17 +7,37 @@ import MissionVisionTab from "../MissionVisionTab";
 import PigeonLogo from "../PigeonLogo";
 import PigeonWayTab from "../PigeonWayTab";
 import TopMessageTab from "../TopMessageTab";
+import { useSelector } from "react-redux";
 
 function AboutTabsContainer(props) {
   const tabKeys = ["about", "pigeon-way", "mission", "logo", "message"];
   const [activeTab, setActiveTab] = useState(props.activeTab || "about");
   const [currentTitle, setCurrentTitle] = useState("About Pigeon");
+  const [showSpinner, setShowSpinner] = useState(false);
+  const [tabData, setTabData] = useState({
+    aboutPage: "",
+    missionVision: "",
+    pigeonLogo: "",
+    topMessage: "",
+  });
 
   useEffect(() => {
     if (props.activeTab) {
       setActiveTab(props.activeTab);
     }
   }, [props.activeTab]);
+
+  const pages = useSelector((state) => state.allPages.pages);
+  useEffect(() => {
+    setShowSpinner(true);
+    if (pages && pages.length > 0) {
+      let aboutPage = pages.find((x) => x.slug === "about-us-active");
+      let missionVision = pages.find((x) => x.slug === "mission-vision");
+      let pigeonLogo = pages.find((x) => x.slug === "pigeon-logo");
+      let topMessage = pages.find((x) => x.slug === "top-message");
+      setTabData({ aboutPage, missionVision, pigeonLogo, topMessage });
+    }
+  }, [pages]);
 
   const { global } = props;
 
@@ -102,6 +122,10 @@ function AboutTabsContainer(props) {
     }
   }, [activeTab, global]);
 
+  const changeSpinnerStatus = () => {
+    setShowSpinner(false);
+  };
+
   return (
     <div className="about-tab-container">
       <Container>
@@ -119,13 +143,21 @@ function AboutTabsContainer(props) {
             eventKey="about"
             title={global?.activeLanguage === "ar" ? "عن بيجون" : "About Us"}
           >
-            <AboutUsTab language={global?.activeLanguage} />
+            <AboutUsTab
+              language={global?.activeLanguage}
+              activeTab={activeTab}
+              currentPage={tabData.aboutPage}
+              changeSpinnerStatus={changeSpinnerStatus}
+            />
           </Tab>
           <Tab
             eventKey="pigeon-way"
             title={props.language === "ar" ? "أسلوب بيجون" : "Pigeon Way"}
           >
-            <PigeonWayTab language={global?.activeLanguage} />
+            <PigeonWayTab
+              language={global?.activeLanguage}
+              activeTab={activeTab}
+            />
           </Tab>
           <Tab
             eventKey="mission"
@@ -135,7 +167,11 @@ function AboutTabsContainer(props) {
                 : "Mission & Vision "
             }
           >
-            <MissionVisionTab />
+            <MissionVisionTab
+              language={global?.activeLanguage}
+              currentPage={tabData.missionVision}
+              activeTab={activeTab}
+            />
           </Tab>
           <Tab
             eventKey="logo"
@@ -143,7 +179,11 @@ function AboutTabsContainer(props) {
               global?.activeLanguage === "ar" ? "شعار بيجون" : "Pigeon Logo"
             }
           >
-            <PigeonLogo />
+            <PigeonLogo
+              language={global?.activeLanguage}
+              currentPage={tabData.pigeonLogo}
+              activeTab={activeTab}
+            />
           </Tab>
           <Tab
             eventKey="message"
@@ -151,7 +191,11 @@ function AboutTabsContainer(props) {
               global?.activeLanguage === "ar" ? "رسالة مهمة" : "Top Message"
             }
           >
-            <TopMessageTab language={global?.activeLanguage} />
+            <TopMessageTab
+              language={global?.activeLanguage}
+              currentPage={tabData.topMessage}
+              activeTab={activeTab}
+            />
           </Tab>
         </Tabs>
       </div>

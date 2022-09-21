@@ -1,121 +1,94 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import { Helmet } from "react-helmet";
-import { connect } from "react-redux";
 import BreadCrumbs from "../components/BreadCrumbs";
 import { API } from "../http/API";
 import GraphicInfo from "../sections/PostPregnancy/GraphicInfo/GraphicInfo";
-import PostPregnancyTabContainer from "../sections/PostPregnancy/PostPregnancyTabContainer";
 import PostPregnancyHeader from "../sections/PostPregnancy/PregnancyHeader";
 import { constants } from "../utils/constants";
+import { useSelector } from "react-redux";
 
-class PostPregnancy extends Component {
-  state = {
-    postPregnancyData: null,
-    breadCrumbItemsEnglish: [
-      {
-        text: "Home",
-        active: false,
-        link: "/",
-      },
-      {
-        text: "Post Pregnancy",
-        active: true,
-        link: `/${this.props.global.activeLanguage}/post-pregnancy`,
-      },
-    ],
-    breadCrumbItemsArabic: [
-      {
-        text: "الرئيسية",
-        active: false,
-        link: "/",
-      },
-      {
-        text: "ما بعد الحمل",
-        active: true,
-        link: `/${this.props.global.activeLanguage}/post-pregnancy`,
-      },
-    ],
-  };
+const PostPregnancy = () => {
+  const pages = useSelector((state) => state.allPages.pages);
+  const global = useSelector((state) => state.globalReducer);
+  const [currentPage, setCurrentPage] = useState(null);
+  const [postPregnancyData, setPostPregnancyData] = useState(null);
 
-  componentDidMount() {
-    API.get(`/pages`)
-      .then((response) => {
-        if (
-          response.status === 200 ||
-          response.status === 201
-        ) {
-          let currentPage = response.data.find(
-            (x) => x.slug === "post-pregnancy"
-          );
-          this.setState({ currentPage });
+  useEffect(() => {
+    if (pages && pages.length > 0) {
+      let pageData = pages.find((x) => x.slug === "post-pregnancy");
+      setCurrentPage(pageData);
 
-          API.get(`/all_widgets/${currentPage._id}`)
-            .then((res) => {
-              let widget_content =
-                res.data?.[res.data?.length - 1]
-                  ?.widget_content;
-              this.setState({
-                postPregnancyData: widget_content,
-              });
-            })
-            .catch((err) => console.log(err));
+      API.get(`/all_widgets/${pageData._id}`)
+        .then((res) => {
+          let widget_content = res.data?.[res.data?.length - 1]?.widget_content;
+          // debugger;
+          setPostPregnancyData(widget_content);
+        })
+        .catch((err) => console.log(err));
+    }
+  }, [pages]);
+
+  const breadCrumbItemsEnglish = [
+    {
+      text: "Home",
+      active: false,
+      link: "/",
+    },
+    {
+      text: "Post Pregnancy",
+      active: true,
+      link: `/${global.activeLanguage}/post-pregnancy`,
+    },
+  ];
+  const breadCrumbItemsArabic = [
+    {
+      text: "الرئيسية",
+      active: false,
+      link: "/",
+    },
+    {
+      text: "ما بعد الحمل",
+      active: true,
+      link: `/${global.activeLanguage}/post-pregnancy`,
+    },
+  ];
+  return (
+    <div className="post-pregnancy-page">
+      <Helmet>
+        <title>{currentPage?.meta_details?.title || constants.site_name}</title>
+        <meta
+          name="description"
+          content={
+            currentPage?.meta_details?.description || constants.seo_description
+          }
+        />
+        <link rel="canonical" href={window.location.href} />
+      </Helmet>
+      <BreadCrumbs
+        breadCrumbItems={
+          global?.activeLanguage === "en"
+            ? breadCrumbItemsEnglish
+            : breadCrumbItemsArabic
         }
-      })
-      .catch((err) => console.log(err));
-  }
-
-  render() {
-    const { global } = this.props;
-    return (
-      <div className="post-pregnancy-page">
-        <Helmet>
-          <title>
-            {this.state.currentPage?.meta_details?.title ||
-              constants.site_name}
-          </title>
-          <meta
-            name="description"
-            content={
-              this.state.currentPage?.meta_details
-                ?.description || constants.seo_description
-            }
-          />
-           <link rel="canonical" href={window.location.href} />
-        </Helmet>
-        <BreadCrumbs
-          breadCrumbItems={
-            global?.activeLanguage === "en"
-              ? this.state.breadCrumbItemsEnglish
-              : this.state.breadCrumbItemsArabic
-          }
-          language = {global?.activeLanguage}
-        />
-        <PostPregnancyHeader
-          data={
-            global?.activeLanguage === "ar"
-              ? this.state.postPregnancyData?.arabic
-              : this.state.postPregnancyData
-          }
-          language={global?.activeLanguage}
-        />
-        {/* <PostPregnancyTabContainer /> */}
-        <GraphicInfo
-          data={
-            global?.activeLanguage === "ar"
-              ? this.state.postPregnancyData?.arabic
-                  ?.pregnancy
-              : this.state.postPregnancyData?.pregnancy
-          }
-        />
-      </div>
-    );
-  }
-}
-
-const mapStateToProps = (state) => {
-  return {
-    global: state.globalReducer,
-  };
+        language={global?.activeLanguage}
+      />
+      <PostPregnancyHeader
+        data={
+          global?.activeLanguage === "ar"
+            ? postPregnancyData?.arabic
+            : postPregnancyData
+        }
+        language={global?.activeLanguage}
+      />
+      <GraphicInfo
+        data={
+          global?.activeLanguage === "ar"
+            ? postPregnancyData?.arabic?.pregnancy
+            : postPregnancyData?.pregnancy
+        }
+      />
+    </div>
+  );
 };
 
-export default connect(mapStateToProps)(PostPregnancy);
+export default PostPregnancy;

@@ -1,96 +1,73 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import { Helmet } from "react-helmet";
-import { connect } from "react-redux";
 import BreadCrumbs from "../components/BreadCrumbs";
-import { API } from "../http/API";
 import BabyCare from "../sections/MotherBabyWorld/BabyCare";
 import Pregnancy from "../sections/MotherBabyWorld/Pregnancy";
 import QuestionsAndAnswers from "../sections/MotherBabyWorld/QuestionsAndAnswers";
 import { constants } from "../utils/constants";
+import { useSelector } from "react-redux";
 
+const MotherBabyWorld = () => {
+  const [currentPage, setCurrentPage] = useState(null);
+  const pages = useSelector((state) => state.allPages.pages);
 
-class MotherBabyWorld extends Component {
-    state = {
-        currentPage: null,
-        breadCrumbItemsEnglish : [
-            {
-                text: "Home",
-                active: false,
-                link: "/",
-            },
-            {
-                text: "Mother & Baby World",
-                active: true,
-                link: `/${this.props.global.activeLanguage}/mother-baby-world`,
-            },
-        ],
-        breadCrumbItemsArabic : [
-            {
-                text: "الرئيسية",
-                active: false,
-                link: "/",
-            },
-            {
-                text: "عالم الأم والطفل",
-                active: true,
-                link: `/${this.props.global.activeLanguage}/mother-baby-world`,
-            },
-        ],
-    };
-    componentDidMount() {
-        API.get(`/pages`)
-            .then((response) => {
-                if (
-                    response.status === 200 ||
-                    response.status === 201
-                ) {
-                    let currentPage = response.data.find(
-                        (x) => x.slug === "mother-baby-world"
-                    );
-                    this.setState({ currentPage });
-                }
-            })
-            .catch((err) => console.log(err));
+  useEffect(() => {
+    if (pages && pages.length > 0) {
+      let pageData = pages.find((x) => x.slug === "mother-baby-world");
+      setCurrentPage(pageData);
     }
-    render() {
-        const { global } = this.props;
-        return (
-            <div className="mother-baby-page">
-                <Helmet>
-                    <title>
-                        {this.state.currentPage?.meta_details?.title ||
-                        constants.site_name}
-                    </title>
-                    <meta
-                        name="description"
-                        content={
-                            this.state.currentPage?.meta_details
-                                ?.description || constants.seo_description
-                        }
-                    />
-                     <link rel="canonical" href={window.location.href} />
-                </Helmet>
-                <BreadCrumbs 
-                breadCrumbItems={
-                    global?.activeLanguage === "en"
-                    ? this.state.breadCrumbItemsEnglish
-                    : this.state.breadCrumbItemsArabic
-                    }
-                    language = {global?.activeLanguage}
-                 />
-                <QuestionsAndAnswers
-                    language={global?.activeLanguage}
-                />
-                <BabyCare language={global?.activeLanguage} />
-                <Pregnancy language={global?.activeLanguage} />
-            </div>
-        );
-    }
-}
+  }, [pages]);
 
-const mapStateToProps = (state) => {
-    return {
-        global: state.globalReducer,
-    };
+  const global = useSelector((state) => state.globalReducer);
+
+  const breadCrumbItemsEnglish = [
+    {
+      text: "Home",
+      active: false,
+      link: "/",
+    },
+    {
+      text: "Mother & Baby World",
+      active: true,
+      link: `/${global.activeLanguage}/mother-baby-world`,
+    },
+  ];
+  const breadCrumbItemsArabic = [
+    {
+      text: "الرئيسية",
+      active: false,
+      link: "/",
+    },
+    {
+      text: "عالم الأم والطفل",
+      active: true,
+      link: `/${global.activeLanguage}/mother-baby-world`,
+    },
+  ];
+  return (
+    <div className="mother-baby-page">
+      <Helmet>
+        <title>{currentPage?.meta_details?.title || constants.site_name}</title>
+        <meta
+          name="description"
+          content={
+            currentPage?.meta_details?.description || constants.seo_description
+          }
+        />
+        <link rel="canonical" href={window.location.href} />
+      </Helmet>
+      <BreadCrumbs
+        breadCrumbItems={
+          global?.activeLanguage === "en"
+            ? breadCrumbItemsEnglish
+            : breadCrumbItemsArabic
+        }
+        language={global?.activeLanguage}
+      />
+      <QuestionsAndAnswers language={global?.activeLanguage} />
+      <BabyCare language={global?.activeLanguage} />
+      <Pregnancy language={global?.activeLanguage} />
+    </div>
+  );
 };
-export default connect(mapStateToProps)(MotherBabyWorld);
+export default MotherBabyWorld;

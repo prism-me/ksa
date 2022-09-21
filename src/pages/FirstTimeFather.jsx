@@ -1,128 +1,93 @@
-import React, { Component } from "react";
+import React, { useEffect, useState } from "react";
 import { Container } from "react-bootstrap";
 import { Helmet } from "react-helmet";
-import { connect } from "react-redux";
 import BreadCrumbs from "../components/BreadCrumbs";
 import { API } from "../http/API";
-import FatherCommunicate from "../sections/FirstTimeFather/FatherCommunicate/FatherCommunicate";
 import FirstTrimester from "../sections/FirstTimeFather/FirstTrimester";
-import SecondTrimester from "../sections/FirstTimeFather/SecondTrimester";
-import ThirdTrimester from "../sections/FirstTimeFather/ThirdTrimester";
 import { constants } from "../utils/constants";
+import { useSelector } from "react-redux";
 
-class FirstTimeFather extends Component {
-  state = {
-    firstTimeFatherData: [],
-    currentPage: null,
-    breadCrumbItemsEnglish: [
-      {
-        text: "Home",
-        active: false,
-        link: "/",
-      },
-      {
-        text: "First Time Father",
-        active: true,
-        link: `/${this.props.global.activeLanguage}/first-time-father`,
-      },
-    ],
-    breadCrumbItemsArabic: [
-      {
-        text: "الرئيسية",
-        active: false,
-        link: "/",
-      },
-      {
-        text: "أب لأول مرة",
-        active: true,
-        link: `/${this.props.global.activeLanguage}/first-time-father`,
-      },
-    ],
-  };
-  componentDidMount() {
-    API.get(`/pages`)
-      .then((response) => {
-        if (
-          response.status === 200 ||
-          response.status === 201
-        ) {
-          let currentPage = response.data.find(
-            (x) => x.slug === "first-time-father"
-          );
-          this.setState({ currentPage });
+const FirstTimeFather = () => {
+  const pages = useSelector((state) => state.allPages.pages);
+  const [currentPage, setCurrentPage] = useState(null);
+  const [firstTimeFatherData, setFirstTimeFatherData] = useState([]);
 
-          API.get(`/all_widgets/${currentPage._id}`)
-            .then((res) => {
-              let widget_content =
-                res.data?.[res.data.length - 1]
-                  ?.widget_content;
-              // debugger;
-              this.setState({
-                firstTimeFatherData: widget_content,
-              });
-            })
-            .catch((err) => console.log(err));
-        }
-      })
-      .catch((err) => console.log(err));
-  }
-  render() {
-    const { global } = this.props;
-    return (
-      <div className="first-time-father-page">
-        <Helmet>
-          <title>
-            {this.state.currentPage?.meta_details?.title ||
-              constants.site_name}
-          </title>
-          <meta
-            name="description"
-            content={
-              this.state.currentPage?.meta_details
-                ?.description || constants.seo_description
-            }
-          />
-           <link rel="canonical" href={window.location.href} />
-        </Helmet>
-        <BreadCrumbs
-          breadCrumbItems={
-            global?.activeLanguage === "en"
-              ? this.state.breadCrumbItemsEnglish
-              : this.state.breadCrumbItemsArabic
+  useEffect(() => {
+    if (pages && pages.length > 0) {
+      let pageData = pages.find((x) => x.slug === "first-time-father");
+      setCurrentPage(pageData);
+
+      API.get(`/all_widgets/${pageData._id}`)
+        .then((res) => {
+          let widget_content = res.data?.[res.data?.length - 1]?.widget_content;
+          setFirstTimeFatherData(widget_content);
+        })
+        .catch((err) => console.log(err));
+    }
+  }, [pages]);
+
+  const global = useSelector((state) => state.globalReducer);
+
+  const breadCrumbItemsEnglish = [
+    {
+      text: "Home",
+      active: false,
+      link: "/",
+    },
+    {
+      text: "First Time Father",
+      active: true,
+      link: `/${global.activeLanguage}/first-time-father`,
+    },
+  ];
+  const breadCrumbItemsArabic = [
+    {
+      text: "الرئيسية",
+      active: false,
+      link: "/",
+    },
+    {
+      text: "أب لأول مرة",
+      active: true,
+      link: `/${global.activeLanguage}/first-time-father`,
+    },
+  ];
+  return (
+    <div className="first-time-father-page">
+      <Helmet>
+        <title>{currentPage?.meta_details?.title || constants.site_name}</title>
+        <meta
+          name="description"
+          content={
+            currentPage?.meta_details?.description || constants.seo_description
           }
-          language = {global?.activeLanguage}
         />
-        <Container>
-          <h1 className="first-time-father-heading">
-          {global?.activeLanguage === "en" ? "First Time Father" : "أب لأول مرة" }
-          </h1>
-        </Container>
-        {global?.activeLanguage === "ar"
-          ? this.state.firstTimeFatherData?.arabic?.father?.map(
-              (x, index) => (
-                <FirstTrimester
-                  textOrder={index % 2}
-                  data={x}
-                />
-              )
-            )
-          : this.state.firstTimeFatherData?.father?.map(
-              (x, index) => (
-                <FirstTrimester
-                  textOrder={index % 2}
-                  data={x}
-                />
-              )
-            )}
-      </div>
-    );
-  }
-}
-
-const mapStateToProps = (state) => {
-  return {
-    global: state.globalReducer,
-  };
+        <link rel="canonical" href={window.location.href} />
+      </Helmet>
+      <BreadCrumbs
+        breadCrumbItems={
+          global?.activeLanguage === "en"
+            ? breadCrumbItemsEnglish
+            : breadCrumbItemsArabic
+        }
+        language={global?.activeLanguage}
+      />
+      <Container>
+        <h1 className="first-time-father-heading">
+          {global?.activeLanguage === "en"
+            ? "First Time Father"
+            : "أب لأول مرة"}
+        </h1>
+      </Container>
+      {global?.activeLanguage === "ar"
+        ? firstTimeFatherData?.arabic?.father?.map((x, index) => (
+            <FirstTrimester textOrder={index % 2} data={x} />
+          ))
+        : firstTimeFatherData?.father?.map((x, index) => (
+            <FirstTrimester textOrder={index % 2} data={x} />
+          ))}
+    </div>
+  );
 };
 
-export default connect(mapStateToProps)(FirstTimeFather);
+export default FirstTimeFather;

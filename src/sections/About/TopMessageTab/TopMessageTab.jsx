@@ -9,28 +9,16 @@ function TopMessageTab(props) {
   const [currentPage, setCurrentPage] = useState(null);
 
   useEffect(() => {
-    API.get(`/pages`)
-      .then((response) => {
-        if (
-          response.status === 200 ||
-          response.status === 201
-        ) {
-          let currentPage = response.data.find(
-            (x) => x.slug === "top-message"
-          );
-          setCurrentPage(currentPage);
-          API.get(`/all_widgets/${currentPage._id}`)
-            .then((res) => {
-              let widget_content =
-                res.data[res.data.length - 1]
-                  .widget_content;
-              setTopMessageData(widget_content);
-            })
-            .catch((err) => console.log(err));
-        }
-      })
-      .catch((err) => console.log(err));
-  }, []);
+    if (props.currentPage._id) {
+      setCurrentPage(props.currentPage);
+      API.get(`/all_widgets/${props.currentPage._id}`)
+        .then((res) => {
+          let widget_content = res.data[res.data.length - 1].widget_content;
+          setTopMessageData(widget_content);
+        })
+        .catch((err) => console.log(err));
+    }
+  }, [props.currentPage]);
 
   const { global } = props;
 
@@ -45,33 +33,25 @@ function TopMessageTab(props) {
         <Container>
           <div className="ceo-message">
             <div
-                className={`graphic-section ${
-                    props.language === "ar"
-                        ? "graphic-section-Arabic"
-                        : ""
-                }`}
-                // className="graphic-section"
+              className={`graphic-section ${
+                props.language === "ar" ? "graphic-section-Arabic" : ""
+              }`}
+              // className="graphic-section"
             >
-              <img
-                src={topMessageData?.image}
-                alt="CEO Intro"
-              />
+              <img src={topMessageData?.image} alt="CEO Intro" />
             </div>
             <div className="text-section">
               <div
-                  className={`message-body ${
-                      props.language === "ar"
-                          ? "message-body-Arabic"
-                          : ""
-                  }`}
-                  // className="message-body"
+                className={`message-body ${
+                  props.language === "ar" ? "message-body-Arabic" : ""
+                }`}
+                // className="message-body"
               >
                 <div
                   dangerouslySetInnerHTML={{
                     __html: `${
                       global?.activeLanguage === "ar"
-                        ? topMessageData?.arabic
-                            ?.first_content
+                        ? topMessageData?.arabic?.first_content
                         : topMessageData?.first_content
                     }`,
                   }}

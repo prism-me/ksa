@@ -1,77 +1,20 @@
 import React, { Component } from "react";
 import ImageMenu from "../sections/Home/ImageMenu/ImageMenu";
 import ProductsGrid from "../sections/Home/ProductsGrid/ProductsGrid";
-// import ProductSlider from "../sections/Home/ProductSlider/ProductSlider";
 import PromoBanner from "../sections/Home/PromoBanner";
 import Slider from "../sections/Home/Slider";
 import RelatedArticle from "../sections/Products/RelatedArticle";
-// import Collection from '../sections/Home/Slider/Slider'
 import Welcome from "../sections/Home/Welcome/Welcome";
 import { connect } from "react-redux";
-import {
-  getCategories,
-  getCategoryProducts,
-  getProducts,
-} from "../redux/products";
-import { API } from "../http/API";
-
-// import { articleCategories, articleDetailsList } from "../utils/data";
+import { getCategories } from "../redux/products";
 import Help from "../sections/Products/Help/Help";
 import { Helmet } from "react-helmet";
-import { constants } from "../utils/constants";
 
 class Home extends Component {
   state = {
     currentPage: null,
-    products: [],
-    currentArticleIndex: 0,
     categories: this.props.categories?.filter((x) => x.parent_id === null),
-    widget_content: null,
-    articles: [],
   };
-  componentDidMount() {
-    // document.title = notFound.pageTitle;
-    let currentPage = null;
-    API.get(`/filteredProduct/${null}/${null}/${"Recommended"}?page=all`)
-      .then((response) => {
-        this.setState({ products: response.data?.data });
-      })
-      .then(() => {
-        API.get(`/pages`).then((response) => {
-          if (response.status === 200 || response.status === 201) {
-            currentPage = response.data.find((x) => x.slug === "home-page");
-            this.setState({ currentPage });
-          }
-        });
-        // .then(() => {
-        //   API.get(`/all_widgets/${currentPage._id}`).then(
-        //     (response) => {
-        //       if (response.data) {
-        //         // debugger;
-        //         this.setState({
-        //           widget_content:
-        //             response.data[
-        //               response.data?.length - 1
-        //             ]?.widget_content,
-        //         });
-        //       }
-        //     }
-        //   );
-        // });
-      })
-      .catch((err) => console.log(err));
-
-    API.get("/articles").then((response) => {
-      if (response.data) {
-        this.setState({
-          articles: response.data.sort(
-            (a, b) => a.currentIndex - b.currentIndex
-          ),
-          currentArticleIndex: Math.floor(Math.random() * response.data.length),
-        });
-      }
-    });
-  }
 
   componentDidUpdate(prevProps) {
     if (this.props.categories !== prevProps.categories) {
@@ -85,104 +28,61 @@ class Home extends Component {
     }
   }
   render() {
-    const { widget_content, articles, currentArticleIndex } = this.state;
     const { global } = this.props;
-    // debugger;
     return (
       <div>
         <Helmet htmlAttributes>
           <html lang="en" />
-          {/* <head> */}
           <title>
             {global?.activeLanguage === "ar"
-              ? this.state.currentPage?.arabic?.meta_details?.title
-              : this.state.currentPage?.meta_details?.title}
+              ? "Pigeon KSA Arabia I منتجات العناية بالأم والطفل التي أتسوقها الآن"
+              : "Pigeon KSA Arabia I Mother & Baby Care Products I Shop Now"}
           </title>
-          {/* </head> */}
           <meta
             property="og:title"
-            // data-react-helmet="true"
             content={
               global?.activeLanguage === "ar"
-                ? this.state.currentPage?.arabic?.meta_details?.title
-                : this.state.currentPage?.meta_details?.title
+                ? "Pigeon KSA Arabia I منتجات العناية بالأم والطفل التي أتسوقها الآن"
+                : "Pigeon KSA Arabia I Mother & Baby Care Products I Shop Now"
             }
           />
-          <link rel="canonical" href={window.location.href} />
           <meta
             name="description"
-            // data-react-helmet="true"
             content={
               global?.activeLanguage === "ar"
-                ? this.state.currentPage?.arabic?.meta_details?.description
-                : this.state.currentPage?.meta_details?.description
+                ? "حل شامل لتلبية جميع احتياجاتك من الأمومة إلى رعاية الأطفال. تصفح مجموعتنا الواسعة من المنتجات التي تتراوح من شافطات حليب الأم ، والزجاجات ، والحلمات ، وسادات الثدي والمزيد."
+                : "A one-stop solution to meet all your needs from maternity to childcare. Browse our wide range of products ranging from breast pumps, bottles, teats, breast pads and more."
             }
           />
           <script type="application/ld+json">
-            {global?.activeLanguage === "ar"
-              ? this.state.currentPage?.arabic?.meta_details?.schema_markup
-              : this.state.currentPage?.meta_details?.schema_markup}
+            {global?.activeLanguage === "ar" ? "" : ""}
           </script>
         </Helmet>
-        <Slider
-          // sliderOne={
-          //   global?.activeLanguage === "ar"
-          //     ? widget_content?.arabic?.sliderOne
-          //     : widget_content?.sliderOne
-          // }
-          // sliderTwo={
-          //   global?.activeLanguage === "ar"
-          //     ? widget_content?.arabic?.sliderTwo
-          //     : widget_content?.sliderTwo
-          // }
-          // sliderThree={
-          //   global?.activeLanguage === "ar"
-          //     ? widget_content?.arabic?.sliderThree
-          //     : widget_content?.sliderThree
-          // }
-          activeLanguage={global?.activeLanguage}
-        />
-        <Welcome
-          // tagSection={
-          //   global?.activeLanguage === "ar"
-          //     ? widget_content?.arabic?.tagSection
-          //     : widget_content?.tagSection
-          // }
-          // welcomeSection={
-          //   global?.activeLanguage === "ar"
-          //     ? widget_content?.arabic?.welcomeSection
-          //     : widget_content?.welcomeSection
-          // }
-          language={global?.activeLanguage}
-        />
+        <Slider activeLanguage={global?.activeLanguage} />
+        <Welcome language={global?.activeLanguage} />
         <ImageMenu language={global?.activeLanguage} />
         <ProductsGrid
           categories={this.state.categories}
           isArabic={global?.activeLanguage === "ar"}
           language={global?.activeLanguage}
         />
-        {/* <ProductSlider products={this.state.products} /> */}
-        <PromoBanner
-          language={global?.activeLanguage}
-          // banner_image={widget_content?.promoSection?.map(
-          //   (x) => x.images_detail?.background_image
-          // )}
-          // promo_details={widget_content}
-        />
+        <PromoBanner language={global?.activeLanguage} />
         <RelatedArticle
           language={global?.activeLanguage}
           articleTitle={
             global?.activeLanguage === "ar"
-              ? articles?.[currentArticleIndex]?.arabic?.title
-              : articles?.[currentArticleIndex]?.title
+              ? "النظام الغذائي للأم خلال فترة الرضاعة الطبيعية"
+              : "Mother’s Diet During the Breastfeeding Period"
           }
           articleDescription={
             global?.activeLanguage === "ar"
-              ? articles?.[currentArticleIndex]?.arabic?.exert
-              : articles?.[currentArticleIndex]?.exert
+              ? "<h3>اعتني بنظامك الغذائي من أجل طفلك</h3>\n\n<p>تحتاج الأمهات بعد الولادة إلى طاقة أكثر بكثير مما تتطلبه أثناء الحمل. والسبب أنهم ينتجون اللبن ويحتاجون إلى التغذية لذلك. علاوة على ذلك، فإن الأم تعتني بالطفل وتنام أقل بكثير. لهذا السبب من المهم الاهتمام بالنظام الغذائي للأم خلال هذا الوقت.</p>"
+              : "<h3>Take care of your diet for your baby&rsquo;s sake</h3>\n\n<p>Postpartum mothers require far more energy than during pregnancy. The reason is that they are producing breast milk and they require nutrition for that. Moreover, the mother is also taking care of the baby and getting far less sleep. That is why it is important to take care of the mother&rsquo;s diet during this time.</p>"
           }
-          articleImage={articles?.[currentArticleIndex]?.banner_img}
-          articleRoute={`/${global?.activeLanguage}/breastfeeding-advisor/${articles?.[currentArticleIndex]?.category_route}/${articles?.[currentArticleIndex]?.route}`}
+          articleImage={
+            "https://pigeon.b-cdn.net/album1%2FMother%E2%80%99s%20Diet%20Banner.jpeg"
+          }
+          articleRoute={`/${global?.activeLanguage}/breastfeeding-advisor/hints-for-continuing-to-breastfeed/mothers-diet-during-the-breastfeeding-period`}
         />
         <Help
           isArabic={global?.activeLanguage === "ar"}
@@ -195,20 +95,15 @@ class Home extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    products: state?.productReducer?.products,
-    categoryProducts: state?.productReducer?.categoryProducts,
-    totalProducts: state?.productReducer?.totalProducts,
     categories: state?.productReducer?.categories,
-    // showSpinner: state?.globalReducer?.showSpinner,
     global: state.globalReducer,
+    pages: state?.allPages.pages,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    getProducts: (page) => dispatch(getProducts(page)),
     getCategories: () => dispatch(getCategories()),
-    getCategoryProducts: (category) => dispatch(getCategoryProducts(category)),
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Home);

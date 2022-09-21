@@ -1,115 +1,92 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import VideoGrid from "../sections/VideoGrid";
 import BreadCrumbs from "../components/BreadCrumbs";
 import { API } from "../http/API";
 import { Helmet } from "react-helmet";
 import { constants } from "../utils/constants";
-import { connect } from "react-redux";
+import { useSelector } from "react-redux";
 
-// const breadCrumbItems = [
-//   {
-//     text: "Home",
-//     active: false,
-//     link: "/",
-//   },
-//   {
-//     text: "Video",
-//     active: true,
-//     link: "/video",
-//   },
-// ];
+const Video = () => {
+  const [currentPage, setCurrentPage] = useState(null);
 
-class Video extends Component {
-  state = {
-    videos: [],
-    currentPage: null,
-    breadCrumbItemsEnglish: [
-      {
-        text: "Home" ,
-        active: false,
-        link: "/",
-      },
-      {
-        text: "Video",
-        active: true,
-        link: `/${this.props.global?.activeLanguage}/video`,
-      },
-    ],
-    breadCrumbItemsArabic: [
-      {
-        text: "الرئيسية",
-        active: false,
-        link: "/",
-      },
-      {
-        text:"فيديوهات",
-        active: true,
-        link: `/${this.props.global?.activeLanguage}/video`,
-      },
-    ],
-  };
-  componentDidMount() {
+  const pages = useSelector((state) => state.allPages.pages);
+  useEffect(() => {
+    if (pages && pages.length > 0) {
+      let pageData = pages.find((x) => x.slug === "video");
+      setCurrentPage(pageData);
+    }
+  }, [pages]);
+
+  const [videos, setVideos] = useState([]);
+
+  const getVideosData = () => {
     API.get("/video")
       .then((response) => {
-        this.setState({ videos: response.data });
+        const allData = response.data;
+        setVideos(allData);
       })
-      .then(() => {
-        API.get(`/pages`).then((response) => {
-          if (
-            response.status === 200 ||
-            response.status === 201
-          ) {
-            let currentPage = response.data.find(
-              (x) => x.slug === "video"
-            );
-            this.setState({ currentPage });
-          }
-        });
-      })
-      .catch((err) => console.log(err));
-  }
-  render() {
-    return (
-      <div className="video-page">
-        <Helmet>
-          <title>
-            {this.state.currentPage?.meta_details?.title ||
-              constants.site_name}
-          </title>
-          <meta
-            name="description"
-            content={
-              this.state.currentPage?.meta_details
-                ?.description || constants.seo_description
-            }
-          />
-           <link rel="canonical" href={window.location.href} />
-        </Helmet>
-        <BreadCrumbs
-          breadCrumbItems={          
-            
-          this.props.global?.activeLanguage === "en"
-          ? this.state.breadCrumbItemsEnglish
-          : this.state.breadCrumbItemsArabic
-          }
-          language = {this.props.global?.activeLanguage}
-        />
-        <VideoGrid
-          videos={this.state.videos}
-          isArabic={
-            this.props.global?.activeLanguage === "ar"
-          }
-          language={this.props.global?.activeLanguage}
-        />
-      </div>
-    );
-  }
-}
-
-const mapStateToProps = (state) => {
-  return {
-    global: state.globalReducer,
+      .catch((err) => {
+        console.log(err);
+      });
   };
+
+  useEffect(() => {
+    getVideosData();
+  }, []);
+
+  const global = useSelector((state) => state.globalReducer);
+
+  const breadCrumbItemsEnglish = [
+    {
+      text: "Home",
+      active: false,
+      link: "/",
+    },
+    {
+      text: "Video",
+      active: true,
+      link: `/${global?.activeLanguage}/video`,
+    },
+  ];
+  const breadCrumbItemsArabic = [
+    {
+      text: "الرئيسية",
+      active: false,
+      link: "/",
+    },
+    {
+      text: "فيديوهات",
+      active: true,
+      link: `/${global?.activeLanguage}/video`,
+    },
+  ];
+  return (
+    <div className="video-page">
+      <Helmet>
+        <title>{currentPage?.meta_details?.title || constants.site_name}</title>
+        <meta
+          name="description"
+          content={
+            currentPage?.meta_details?.description || constants.seo_description
+          }
+        />
+        <link rel="canonical" href={window.location.href} />
+      </Helmet>
+      <BreadCrumbs
+        breadCrumbItems={
+          global?.activeLanguage === "en"
+            ? breadCrumbItemsEnglish
+            : breadCrumbItemsArabic
+        }
+        language={global?.activeLanguage}
+      />
+      <VideoGrid
+        videos={videos}
+        isArabic={global?.activeLanguage === "ar"}
+        language={global?.activeLanguage}
+      />
+    </div>
+  );
 };
 
-export default connect(mapStateToProps)(Video);
+export default Video;

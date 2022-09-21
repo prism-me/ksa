@@ -3,7 +3,7 @@ import { useHistory } from "react-router-dom";
 import { Navbar, Nav, NavDropdown, Dropdown } from "react-bootstrap";
 import { connect } from "react-redux";
 import logo from "./../../assets/images/logo.svg";
-import ReactCountryFlag from "react-country-flag"
+import ReactCountryFlag from "react-country-flag";
 import {
   IoIosHeartEmpty,
   IoIosMail,
@@ -25,6 +25,7 @@ import {
 import { API } from "../../http/API";
 import { types } from "../../redux/global/types";
 import { routes } from "../../navigator/routes";
+import { useSelector } from "react-redux";
 
 function MainNavbar(props) {
   const history = useHistory();
@@ -85,7 +86,6 @@ function MainNavbar(props) {
   }, [history.location]);
 
   useEffect(() => {
-
     function handleClickOutside(event) {
       if (searchIconRef && !searchIconRef.current.contains(event.target)) {
         setShowSearch(false);
@@ -98,36 +98,30 @@ function MainNavbar(props) {
   }, []);
 
   useEffect(() => {
-
-    let a = history.location.pathname.split("/")
+    let a = history.location.pathname.split("/");
 
     setTimeout(() => {
-
       if (a[1] != props.global.activeLanguage || !props.global.activeLanguage) {
-        props.setActiveLanguage(a[1] ? a[1] : "ar")
+        props.setActiveLanguage(a[1] ? a[1] : "ar");
       }
-    }, 1000)
+    }, 1000);
   }, []);
+
+  const pages = useSelector((state) => state.allPages.pages);
 
   useEffect(() => {
-    API.get(`/pages`)
-      .then((response) => {
-        if (response.status === 200 || response.status === 201) {
-          let currentPage = response.data.find((x) => x.slug === "header");
-          setCurrentPage(currentPage);
+    if (pages && pages.length > 0) {
+      let pageData = pages.find((x) => x.slug === "header");
+      setCurrentPage(pageData);
 
-          API.get(`/all_widgets/${currentPage._id}`)
-            .then((res) => {
-              let widget_content =
-                res.data?.[res.data?.length - 1]?.widget_content;
-              setMenuItems(widget_content?.menuItems);
-            })
-            .catch((err) => console.log(err));
-        }
-      })
-      .catch((err) => console.log(err));
-  }, []);
-
+      API.get(`all_widgets/${pageData._id}`)
+        .then((res) => {
+          let widget_content = res.data?.[res.data?.length - 1]?.widget_content;
+          setMenuItems(widget_content?.menuItems);
+        })
+        .catch((err) => console.log(err));
+    }
+  }, [pages]);
   return (
     <div className="navbar-wrap">
       <Navbar
@@ -139,7 +133,7 @@ function MainNavbar(props) {
         className={props.show && isHome ? "" : "hide-curve"}
       >
         <Hidden mdUp>
-          <Navbar.Brand href="#">
+          <Navbar.Brand>
             <CgMenuLeftAlt
               onClick={() => props.toggleDrawer(true)}
               className="nav-toggle-override"
@@ -147,83 +141,125 @@ function MainNavbar(props) {
             <img
               src={logo}
               alt="pigeon-logo"
+              style={{ cursor: "pointer" }}
               onClick={() => history.push("/")}
             />
           </Navbar.Brand>
         </Hidden>
         <Hidden smDown>
-          <Navbar.Brand
-            href={`/` || `/${props.global.activeLanguage}`}
-          >
-            <img src={logo} alt="pigeon-logo" />
+          <Navbar.Brand>
+            <img
+              src={logo}
+              alt="pigeon-logo"
+              style={{ cursor: "pointer" }}
+              onClick={() =>
+                history.push(`/` || `/${props.global.activeLanguage}`)
+              }
+            />
           </Navbar.Brand>
         </Hidden>
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="mr-auto ml-4 pl-4 nav-text">
-            <LinkContainer
-              to={`/${props.global.activeLanguage}/about`}
-            >
-              <Nav.Link>{props.global.activeLanguage === "en" ? "About Pigeon" : "حول بيجون"}</Nav.Link>
+            <LinkContainer to={`/${props.global.activeLanguage}/about`}>
+              <Nav.Link>
+                {props.global.activeLanguage === "en"
+                  ? "About Pigeon"
+                  : "حول بيجون"}
+              </Nav.Link>
             </LinkContainer>
             <LinkContainer
               to={`/${props.global.activeLanguage}/mother-baby-products`}
             >
-              <Nav.Link>{props.global.activeLanguage === "en" ? "Our Products" : "منتجاتنا"}</Nav.Link>
+              <Nav.Link>
+                {props.global.activeLanguage === "en"
+                  ? "Our Products"
+                  : "منتجاتنا"}
+              </Nav.Link>
             </LinkContainer>
             <LinkContainer
               to={`/${props.global.activeLanguage}/mother-baby-world`}
             >
-              <Nav.Link>{props.global.activeLanguage === "en" ? "Mother & Baby World" : "عالم الأم والطفل"}</Nav.Link>
+              <Nav.Link>
+                {props.global.activeLanguage === "en"
+                  ? "Mother & Baby World"
+                  : "عالم الأم والطفل"}
+              </Nav.Link>
             </LinkContainer>
-            <LinkContainer
-              to={`/${props.global.activeLanguage}/good-to-know`}
-            >
-              <Nav.Link>{props.global.activeLanguage === "en" ? "Good to know" : "من الجيد أن تعلمي"}</Nav.Link>
+            <LinkContainer to={`/${props.global.activeLanguage}/good-to-know`}>
+              <Nav.Link>
+                {props.global.activeLanguage === "en"
+                  ? "Good to know"
+                  : "من الجيد أن تعلمي"}
+              </Nav.Link>
             </LinkContainer>
             <LinkContainer
               to={`/${props.global.activeLanguage}/breastfeeding-advisor`}
             >
-              <Nav.Link>{props.global.activeLanguage === "en" ? "Breastfeeding Advisor" : "مستشار الرضاعة الطبيعية"}</Nav.Link>
+              <Nav.Link>
+                {props.global.activeLanguage === "en"
+                  ? "Breastfeeding Advisor"
+                  : "مستشار الرضاعة الطبيعية"}
+              </Nav.Link>
             </LinkContainer>
 
-            {props.global.activeLanguage === 'en' ?
-              <LinkContainer
-                to={`/${props.global.activeLanguage}/blog`}
-              >
-                <Nav.Link>{props.global.activeLanguage === "en" ? "Blog" : "المدونة"}</Nav.Link>
+            {props.global.activeLanguage === "en" ? (
+              <LinkContainer to={`/${props.global.activeLanguage}/blog`}>
+                <Nav.Link>
+                  {props.global.activeLanguage === "en" ? "Blog" : "المدونة"}
+                </Nav.Link>
               </LinkContainer>
-              : ""}
-            <LinkContainer
-              to={`/${props.global.activeLanguage}/video`}
-            >
-              <Nav.Link>{props.global.activeLanguage === "en" ? "Video" : "فيديوهات"}</Nav.Link>
+            ) : (
+              ""
+            )}
+            <LinkContainer to={`/${props.global.activeLanguage}/video`}>
+              <Nav.Link>
+                {props.global.activeLanguage === "en" ? "Video" : "فيديوهات"}
+              </Nav.Link>
             </LinkContainer>
             <LinkContainer to={`/${props.global.activeLanguage}/contact`}>
-              <Nav.Link>{props.global.activeLanguage === "en" ? "Contact" : "تواصل معنا"}</Nav.Link>
+              <Nav.Link>
+                {props.global.activeLanguage === "en"
+                  ? "Contact"
+                  : "تواصل معنا"}
+              </Nav.Link>
             </LinkContainer>
           </Nav>
           <div className="dropdown">
             <Dropdown>
-              <Dropdown.Toggle
-                variant=" btn-sm"
-                id="dropdown-basic">
+              <Dropdown.Toggle variant=" btn-sm" id="dropdown-basic">
                 {props.global.activeLanguage === "en" ? "Language" : "اللغة"}
               </Dropdown.Toggle>
               <Dropdown.Menu>
-                <Dropdown.Item as="button"
-                  className={props.global.activeLanguage === "en" ? "active" : ""}
+                <Dropdown.Item
+                  as="button"
+                  className={
+                    props.global.activeLanguage === "en" ? "active" : ""
+                  }
                 >
-                  <div onClick={() => {
-                    props.setActiveLanguage("en");
-                  }}>
-                    {props.global.activeLanguage === "en" ? "English" : "الإنجليزية"}
+                  <div
+                    onClick={() => {
+                      props.setActiveLanguage("en");
+                    }}
+                  >
+                    {props.global.activeLanguage === "en"
+                      ? "English"
+                      : "الإنجليزية"}
                   </div>
                 </Dropdown.Item>
-                <Dropdown.Item as="button" className={props.global.activeLanguage === "ar" ? "active" : ""}>
-                  <div onClick={() => {
-                    props.setActiveLanguage("ar");
-                  }}>
-                    {props.global.activeLanguage === "en" ? "العربية" : "العربية"}
+                <Dropdown.Item
+                  as="button"
+                  className={
+                    props.global.activeLanguage === "ar" ? "active" : ""
+                  }
+                >
+                  <div
+                    onClick={() => {
+                      props.setActiveLanguage("ar");
+                    }}
+                  >
+                    {props.global.activeLanguage === "en"
+                      ? "العربية"
+                      : "العربية"}
                   </div>
                 </Dropdown.Item>
               </Dropdown.Menu>
@@ -248,7 +284,6 @@ function MainNavbar(props) {
                 <IoMdCart fontSize="24px" />
               </Nav.Link>
             </LinkContainer> */}
-
 
             <Nav.Link href="#" className="searchbar-icon" ref={searchIconRef}>
               <IoIosSearch

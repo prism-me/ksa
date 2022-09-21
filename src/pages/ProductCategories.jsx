@@ -18,6 +18,7 @@ import { constants } from "../utils/constants";
 class ProductCategories extends Component {
   productsGridRef = React.createRef();
   state = {
+    currentPage: null,
     categoryProducts: [],
     recommendedProducts: [],
     breadCrumbItemsEnglish: [
@@ -55,14 +56,10 @@ class ProductCategories extends Component {
         });
       })
       .then(() => {
-        API.get(`/pages`).then((response) => {
-          if (response.status === 200 || response.status === 201) {
-            let currentPage = response.data.find(
-              (x) => x.slug === "categories"
-            );
-            this.setState({ currentPage });
-          }
-        });
+        if (this.props.pages && this.props.pages.length > 0) {
+          let pageData = this.props.pages.find((x) => x.slug === "categories");
+          this.setState({ currentPage: pageData });
+        }
       })
       .catch((err) => console.log(err));
   }
@@ -124,6 +121,7 @@ const mapStateToProps = (state) => {
     categories: state?.productReducer?.categories,
     // showSpinner: state?.globalReducer?.showSpinner,
     global: state?.globalReducer,
+    pages: state?.allPages.pages,
   };
 };
 

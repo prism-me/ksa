@@ -178,12 +178,10 @@ class Products extends Component {
         this.setState({ recommendedProducts: response.data?.data });
       })
       .then(() => {
-        API.get(`/pages`).then((response) => {
-          if (response.status === 200 || response.status === 201) {
-            let productsPage = response.data.find((x) => x.slug === "products");
-            this.setState({ productsPage });
-          }
-        });
+        if (this.props.pages && this.props.pages.length > 0) {
+          let pageData = this.props.pages.find((x) => x.slug === "products");
+          this.setState({ productsPage: pageData });
+        }
       })
       .catch((err) => console.log(err));
 
@@ -1119,6 +1117,7 @@ const mapStateToProps = (state) => {
     categories: state?.productReducer?.categories,
     // showSpinner: state?.globalReducer?.showSpinner,
     global: state.globalReducer,
+    pages: state?.allPages.pages,
   };
 };
 

@@ -1,14 +1,8 @@
 import React, { Component } from "react";
 import AboutTabsContainer from "../sections/About/AboutTabsContainer/AboutTabsContainer";
 import BreadCrumbs from "../components/BreadCrumbs";
-import ImageMenu from "../sections/Home/ImageMenu/ImageMenu";
-import {
-  getCategories,
-  getCategoryProducts,
-  getProducts,
-} from "../redux/products";
 import { connect } from "react-redux";
-import { API } from "../http/API";
+import { Helmet } from "react-helmet";
 
 class About extends Component {
   state = {
@@ -52,7 +46,6 @@ class About extends Component {
   };
   componentDidMount() {
     const query = new URLSearchParams(this.props.location.search);
-    // alert(query.get("active"));
     this.setState({ activeTab: query.get("active") });
   }
 
@@ -62,12 +55,7 @@ class About extends Component {
     breadCrumbItemsEnglish[
       breadCrumbItemsEnglish.length - 1
     ].link = `/${this.props.global?.activeLanguage}${link}`;
-    // let filteredbreadCrumbItemsEnglish = breadCrumbItems.filter(
-    //   (x) => x.text != null
-    // );
-    // filteredBreadCrumbItems[filteredBreadCrumbItems.length - 1].active = true;
     this.setState({ breadCrumbItemsEnglish });
-
 
     let breadCrumbItemsArabic = [...this.state.breadCrumbItemsArabic];
     breadCrumbItemsArabic[breadCrumbItemsArabic.length - 1].text = text;
@@ -76,19 +64,33 @@ class About extends Component {
     ].link = `/${this.props.global?.activeLanguage}${link}`;
 
     this.setState({ breadCrumbItemsArabic });
-
   };
 
   render() {
     const { global } = this.props;
     return (
       <div className="about-page">
-
-        <BreadCrumbs breadCrumbItems={
-          global?.activeLanguage === "en"
-            ? this.state.breadCrumbItemsEnglish
-            : this.state.breadCrumbItemsArabic
-        }
+        <Helmet>
+          <title>
+            {global?.activeLanguage === "ar"
+              ? "Pigeon KSA Arabia I منتجات العناية بالأم والطفل التي أتسوقها الآن"
+              : "Pigeon KSA Arabia I Mother & Baby Care Products I Shop Now"}
+          </title>
+          <meta
+            name="description"
+            content={
+              global?.activeLanguage === "ar"
+                ? "حل شامل لتلبية جميع احتياجاتك من الأمومة إلى رعاية الأطفال. تصفح مجموعتنا الواسعة من المنتجات التي تتراوح من شافطات حليب الأم ، والزجاجات ، والحلمات ، وسادات الثدي والمزيد."
+                : "A one-stop solution to meet all your needs from maternity to childcare. Browse our wide range of products ranging from breast pumps, bottles, teats, breast pads and more."
+            }
+          />
+        </Helmet>
+        <BreadCrumbs
+          breadCrumbItems={
+            global?.activeLanguage === "en"
+              ? this.state.breadCrumbItemsEnglish
+              : this.state.breadCrumbItemsArabic
+          }
           language={global?.activeLanguage}
         />
         <AboutTabsContainer

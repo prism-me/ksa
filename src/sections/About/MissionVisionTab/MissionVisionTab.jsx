@@ -8,29 +8,16 @@ function MissionVisionTab(props) {
   const [currentPage, setCurrentPage] = useState(null);
 
   useEffect(() => {
-    API.get(`/pages`)
-      .then((response) => {
-        if (
-          response.status === 200 ||
-          response.status === 201
-        ) {
-          // debugger;
-          let currentPage = response.data.find(
-            (x) => x.slug === "mission-vision"
-          );
-          setCurrentPage(currentPage);
-          API.get(`/all_widgets/${currentPage._id}`)
-            .then((res) => {
-              let widget_content =
-                res.data[res.data.length - 1]
-                  .widget_content;
-              setMissionData(widget_content);
-            })
-            .catch((err) => console.log(err));
-        }
-      })
-      .catch((err) => console.log(err));
-  }, []);
+    if (props.currentPage._id) {
+      setCurrentPage(props.currentPage);
+      API.get(`/all_widgets/${props.currentPage._id}`)
+        .then((res) => {
+          let widget_content = res.data[res.data.length - 1].widget_content;
+          setMissionData(widget_content);
+        })
+        .catch((err) => console.log(err));
+    }
+  }, [props.currentPage]);
   const { global } = props;
   return (
     <div className="mission-vision-tab">
@@ -50,8 +37,7 @@ function MissionVisionTab(props) {
                 dangerouslySetInnerHTML={{
                   __html: `${
                     global?.activeLanguage === "ar"
-                      ? missionData?.arabic?.sectionOne
-                          ?.content
+                      ? missionData?.arabic?.sectionOne?.content
                       : missionData?.sectionOne?.content
                   }`,
                 }}
@@ -69,8 +55,7 @@ function MissionVisionTab(props) {
                 dangerouslySetInnerHTML={{
                   __html: `${
                     global?.activeLanguage === "ar"
-                      ? missionData?.arabic?.sectionTwo
-                          ?.content
+                      ? missionData?.arabic?.sectionTwo?.content
                       : missionData?.sectionTwo?.content
                   }`,
                 }}

@@ -1,18 +1,9 @@
-import React, { useEffect, useReducer, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
-import { Navbar, Nav, NavDropdown, Dropdown } from "react-bootstrap";
+import { Navbar, Nav, Dropdown } from "react-bootstrap";
 import { connect } from "react-redux";
 import logo from "./../../assets/images/logo.svg";
-import ReactCountryFlag from "react-country-flag";
-import {
-  IoIosHeartEmpty,
-  IoIosMail,
-  IoIosSearch,
-  IoMdGlobe,
-  IoIosLogOut,
-  IoMdCart,
-} from "react-icons/io";
-import { VscAccount } from "react-icons/vsc";
+import { IoIosHeartEmpty, IoIosSearch, IoMdGlobe } from "react-icons/io";
 import { CgMenuLeftAlt } from "react-icons/cg";
 import { Hidden } from "@material-ui/core";
 import { LinkContainer } from "react-router-bootstrap";
@@ -22,40 +13,13 @@ import {
   getCategoryProducts,
   getProducts,
 } from "../../redux/products";
-import { API } from "../../http/API";
 import { types } from "../../redux/global/types";
-import { routes } from "../../navigator/routes";
-import { useSelector } from "react-redux";
 
 function MainNavbar(props) {
   const history = useHistory();
   const searchIconRef = React.useRef(null);
   const [isHome, setIsHome] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
-  const [currentPage, setCurrentPage] = useState([]);
-  const [menuItems, setMenuItems] = useState([]);
-  // const [products, setProducts] = useState([]);
-
-  //! Temporary API call for testing
-  // useEffect(() => {
-  //   API.get(`/products`)
-  //     .then((response) => {
-  //       setProducts(response.data.data);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  // }, []);
-
-  //Handle search function.
-  const handleSearch = (e) => {
-    // console.log(e.target.value);
-    // setProducts(
-    //   products.filter((product) =>
-    //     product.includes(e.target.value)
-    //   )
-    // );
-  };
   //!-------------
 
   useEffect(() => {
@@ -74,10 +38,6 @@ function MainNavbar(props) {
       history.location.pathname.startsWith(
         `/${props.global.activeLanguage}/home`
       )
-      // history.location.pathname === "/" ||
-      // history.location.pathname.startsWith("/products") ||
-      // history.location.pathname.startsWith("/category") ||
-      // history.location.pathname.startsWith("/home")
     ) {
       setIsHome(true);
     } else {
@@ -107,21 +67,6 @@ function MainNavbar(props) {
     }, 1000);
   }, []);
 
-  const pages = useSelector((state) => state.allPages.pages);
-
-  useEffect(() => {
-    if (pages && pages.length > 0) {
-      let pageData = pages.find((x) => x.slug === "header");
-      setCurrentPage(pageData);
-
-      API.get(`all_widgets/${pageData._id}`)
-        .then((res) => {
-          let widget_content = res.data?.[res.data?.length - 1]?.widget_content;
-          setMenuItems(widget_content?.menuItems);
-        })
-        .catch((err) => console.log(err));
-    }
-  }, [pages]);
   return (
     <div className="navbar-wrap">
       <Navbar

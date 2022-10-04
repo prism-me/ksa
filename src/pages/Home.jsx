@@ -42,8 +42,8 @@ class Home extends Component {
             property="og:title"
             content={
               global?.activeLanguage === "ar"
-                ? "Pigeon KSA Arabia I منتجات العناية بالأم والطفل التي أتسوقها الآن"
-                : "Pigeon KSA Arabia I Mother & Baby Care Products I Shop Now"
+                ? "Pigeon KSA Arabia | منتجات العناية بالأم والطفل التي أتسوقها الآن"
+                : "Pigeon KSA Arabia | Mother & Baby Care Products I Shop Now"
             }
           />
           <meta

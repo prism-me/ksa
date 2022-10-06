@@ -4,16 +4,23 @@ import VideoItem from "../../components/VideoItem";
 import { constants } from "../../utils/constants";
 import { useEffect } from "react";
 import { connect } from "react-redux";
+import ModalVideo from "react-modal-video";
+import {
+  BsPlayCircleFill
+} from "react-icons/bs";
+import {
+  CgPlayPauseO
+} from "react-icons/cg";
 
 
 const VideoGrid = (props) => {
-  // console.log("====props.global===")
-  // console.log(props.global.activeLanguage)
 
   const [oldAllVideos, setOldAllVideos] = React.useState(props.videos);
   const [allVideos, setAllVideos] = React.useState(props.videos);
   const [selectedCategory, setSelectedCategory] = React.useState("all");
   const [allCategories, setAllCategories] = React.useState([]);
+  const [openVideo, setOpenVideo] = React.useState(false);
+  const [videoSrc, setvideoSrc] = React.useState("");
 
   useEffect(() => {
     if (props.videos.length > 0 && props.videos != allVideos) {
@@ -23,8 +30,9 @@ const VideoGrid = (props) => {
     }
   }, [props.videos])
 
-
   const setCategories = (videos) => {
+    // console.log("===videos===");
+    // console.log(videos);
     let categories = {}
     videos.forEach((element, index, array) => {
       let category = {}
@@ -41,23 +49,26 @@ const VideoGrid = (props) => {
     })
     setAllCategories(categories)
   }
+
+
   const filterVideosByCategory = (category) => {
 
     setSelectedCategory(category)
 
     if (category == 'all') {
       setAllVideos(oldAllVideos)
-      console.log(allVideos)
     } else {
 
-      console.log(category)
-
       const filteredData = oldAllVideos.filter(video => video.category_slug == category);
-      console.log(allVideos)
       setAllVideos(filteredData)
-      console.log(filteredData)
     }
 
+  }
+
+  const playVideo = (url) => {
+    setOpenVideo(true)
+    const splitSrc = url.split("/");
+    setvideoSrc(splitSrc[4])
   }
 
   return (
@@ -79,47 +90,61 @@ const VideoGrid = (props) => {
             {props.global.activeLanguage == 'en' ? 'All' : "الكل"}
           </button>
 
-          {/* <button
-            onClick={() => filterVideosByCategory("breast-feeding")}
-            className={selectedCategory == 'breast-feeding' ? 'filterCategoryBtn active' : "filterCategoryBtn"}
-          >
-            {props.global.activeLanguage == 'en' ? 'Breast Feeding' : "الرضاعة الطبيعية"}
-          </button> */}
-          {/* <button
-            onClick={() => filterVideosByCategory("bottle-feeding")}
-            className={selectedCategory == 'bottle-feeding' ? 'filterCategoryBtn active' : "filterCategoryBtn"}
-          >
-            {props.global.activeLanguage == 'en' ? 'Bottle Feeding' : "زجاجة الرضاعة"}
-          </button> */}
           {Object.keys(allCategories).map(function (key, index) {
             return (
               <button
                 onClick={() => filterVideosByCategory(allCategories[key].category_slug)}
                 className={selectedCategory == allCategories[key].category_slug ? 'filterCategoryBtn active' : "filterCategoryBtn"}
               >
-                {props.global.activeLanguage == 'en' ? allCategories[key].title : allCategories[key].arabic_title}
+                {props.global.activeLanguage == 'en' ? allCategories[key].title : allCategories[key].arabic_title ? allCategories[key].arabic_title : allCategories[key].title}
               </button>
             )
           })}
 
         </Row>
         <Row>
+          {/* {console.log("allVideos",allVideos)} */}
           {allVideos?.map((x, index) => (
-            <VideoItem
-              key={index + x.title}
-              src={x.url}
-              title={
-                props.isArabic ? x.arabic?.title : x.title
-              }
-            />
+            // <VideoItem
+            //   key={index + x.title}
+            //   src={x.url}
+            //   title={
+            //     props.isArabic ? x.arabic?.title : x.title
+            //   }
+            // />
+            <div className="productVideoWidth col-md-4" onClick={() => playVideo(x.url)}>
+              <div className="video-item-wrap">
+                <div className="wrap-iframe">
+                  <img
+                    // width={'300px'} height={'207px'}
+                    src={x.image || ""} alt="" srcset="" />
+                  <BsPlayCircleFill
+                    style={{
+                      position: "absolute",
+                      top: "40%",
+                      right: "45%",
+                      fontSize: "40px"
+                    }}
+                    color={"#e65550"}
+                  />
+                </div>
+                <h6>{props.isArabic ? x.arabic?.title : x.title}</h6>
+              </div>
+            </div>
+            // <img width={'250px'} height={'180px'}  src={x.image || ""} alt="" srcset="" />
+
           ))}
+          <ModalVideo
+            channel="youtube"
+            isOpen={openVideo}
+            videoId={videoSrc}
+            onClose={() => setOpenVideo(false)}
+          />
         </Row>
       </Container>
     </div>
   );
 };
-
-// export default VideoGrid;
 
 const mapStateToProps = (state) => {
   return {
@@ -146,4 +171,3 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(VideoGrid);
-

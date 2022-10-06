@@ -19,6 +19,7 @@ const initialObject = {
 function ContactForm({ language }) {
   const [contactForm, setContactForm] =
     useState(initialObject);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleInputFields = (e) => {
     let updateValue = { ...contactForm };
@@ -28,6 +29,7 @@ function ContactForm({ language }) {
   };
 
   const handleSubmit = () => {
+    setIsLoading(true);
     let name =
       contactForm.first_name + " " + contactForm.last_name;
     let email = contactForm.email;
@@ -35,27 +37,31 @@ function ContactForm({ language }) {
     let message = contactForm.message;
     if (contactForm.first_name === "") {
       alert("Please enter your name");
+      setIsLoading(false);
       return;
     }
 
     if (email === "") {
       alert("Please enter you valid email");
+      setIsLoading(false);
       return;
     }
 
     if (phone === "") {
       alert("Please enter your phone number");
+      setIsLoading(false);
       return;
     }
     if (message === "") {
       alert("Please enter your message");
+      setIsLoading(false);
       return;
     }
 
     let updateValue = { name, email, phone, message };
     axios
       .post(
-        "https://pigeonarabia.com/APIs/public/api/insertContact",
+        "https://www.pigeonarabia.com/KSA_APIs/public/api/insertContact",
         updateValue
       )
       .then((response) => {
@@ -63,11 +69,13 @@ function ContactForm({ language }) {
           response.status === 200 ||
           response.status === 201
         ) {
+          setIsLoading(false);
           setContactForm({ ...initialObject });
           alert("Your feedback sent successfully");
         }
       })
       .catch((err) => {
+        setIsLoading(false);
         console.log(err);
       });
   };
@@ -186,6 +194,7 @@ function ContactForm({ language }) {
                     <ButtonTheme
                       variant="primary"
                       onClick={handleSubmit}
+                      disabled={isLoading ? "true" : ""}
                       style={{
                         borderRadius: "6px",
                         width: "150px",

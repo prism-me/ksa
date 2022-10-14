@@ -179,7 +179,7 @@ class Products extends Component {
 
   componentDidMount() {
     this.props.getCategories();
-    API.get(`/filteredProduct/${null}/${null}/${"Recommended"}?page=all`)
+    API.get(`/product_list/${null}/${null}/${"Recommended"}?page=all`)
       .then((response) => {
         this.setState({ recommendedProducts: response.data?.data });
       })
@@ -335,9 +335,9 @@ class Products extends Component {
             [],
           selectedSubCategoryEnglish: paramSubCategoryEnglish
             ? {
-                value: paramSubCategoryEnglish?.value,
-                label: paramSubCategoryEnglish?.label,
-              }
+              value: paramSubCategoryEnglish?.value,
+              label: paramSubCategoryEnglish?.label,
+            }
             : null,
           selectedCategoryEnglish: {
             value: paramCategory?.route,
@@ -351,9 +351,9 @@ class Products extends Component {
             [],
           selectedSubCategoryArabic: paramSubCategoryArabic
             ? {
-                value: paramSubCategoryArabic?.value,
-                label: paramSubCategoryArabic?.label,
-              }
+              value: paramSubCategoryArabic?.value,
+              label: paramSubCategoryArabic?.label,
+            }
             : null,
           selectedCategoryArabic: {
             value: paramCategory?.route,
@@ -690,11 +690,11 @@ class Products extends Component {
     ) {
       return isArabic
         ? this.props.categories?.find(
-            (x) => x.route === this.state.selectedSubCategoryArabic?.value
-          )?.arabic?.[key]
+          (x) => x.route === this.state.selectedSubCategoryArabic?.value
+        )?.arabic?.[key]
         : this.props.categories?.find(
-            (x) => x.route === this.state.selectedSubCategoryEnglish?.value
-          )?.[key];
+          (x) => x.route === this.state.selectedSubCategoryEnglish?.value
+        )?.[key];
     } else if (
       this.state.selectedSubCategoryEnglish?.value &&
       this.props.categories?.find(
@@ -707,11 +707,11 @@ class Products extends Component {
     ) {
       return isArabic
         ? this.props.categories?.find(
-            (x) => x.route === this.state.selectedCategoryArabic?.value
-          )?.arabic?.[key]
+          (x) => x.route === this.state.selectedCategoryArabic?.value
+        )?.arabic?.[key]
         : this.props.categories?.find(
-            (x) => x.route === this.state.selectedCategoryEnglish?.value
-          )?.[key];
+          (x) => x.route === this.state.selectedCategoryEnglish?.value
+        )?.[key];
     } else if (
       this.state.selectedCategoryEnglish?.value &&
       this.state.selectedCategoryEnglish?.value !== "all" &&
@@ -720,11 +720,11 @@ class Products extends Component {
     ) {
       return isArabic
         ? this.props.categories?.find(
-            (x) => x.route === this.state.selectedCategoryArabic?.value
-          )?.arabic?.[key]
+          (x) => x.route === this.state.selectedCategoryArabic?.value
+        )?.arabic?.[key]
         : this.props.categories?.find(
-            (x) => x.route === this.state.selectedCategoryEnglish?.value
-          )?.[key];
+          (x) => x.route === this.state.selectedCategoryEnglish?.value
+        )?.[key];
     } else {
       return defaultContentProducts[key];
     }
@@ -816,48 +816,48 @@ class Products extends Component {
                     </option>
                     {global?.activeLanguage === "en"
                       ? // console.log(this.state.subCategoriesEnglish,)
-                        this.state.categoriesEnglish?.map((data) => {
-                          let selectedCat =
-                            this.state.selectedCategoryEnglish?.value ==
+                      this.state.categoriesEnglish?.map((data) => {
+                        let selectedCat =
+                          this.state.selectedCategoryEnglish?.value ==
                             data.value
-                              ? "selected"
-                              : "";
-                          return (
-                            <option
-                              value={JSON.stringify(data)}
-                              selectedCat
-                              style={
-                                this.state.selectedCategoryEnglish?.value ==
+                            ? "selected"
+                            : "";
+                        return (
+                          <option
+                            value={JSON.stringify(data)}
+                            selectedCat
+                            style={
+                              this.state.selectedCategoryEnglish?.value ==
                                 data.value
-                                  ? selectedOptionStyle
-                                  : optionStyle
-                              }
-                            >
-                              {data.label}
-                            </option>
-                          );
-                        })
+                                ? selectedOptionStyle
+                                : optionStyle
+                            }
+                          >
+                            {data.label}
+                          </option>
+                        );
+                      })
                       : this.state.categoriesArabic?.map((data) => {
-                          let selectedCat =
-                            this.state.selectedCategoryArabic?.value ==
+                        let selectedCat =
+                          this.state.selectedCategoryArabic?.value ==
                             data.value
-                              ? "selected"
-                              : "";
-                          return (
-                            <option
-                              value={JSON.stringify(data)}
-                              selectedCat
-                              style={
-                                this.state.selectedCategoryArabic?.value ==
+                            ? "selected"
+                            : "";
+                        return (
+                          <option
+                            value={JSON.stringify(data)}
+                            selectedCat
+                            style={
+                              this.state.selectedCategoryArabic?.value ==
                                 data.value
-                                  ? selectedOptionStyle
-                                  : optionStyle
-                              }
-                            >
-                              {data.label}
-                            </option>
-                          );
-                        })}
+                                ? selectedOptionStyle
+                                : optionStyle
+                            }
+                          >
+                            {data.label}
+                          </option>
+                        );
+                      })}
                   </select>
 
                   {/* <Dropdown
@@ -889,48 +889,48 @@ class Products extends Component {
                     </option>
                     {global?.activeLanguage === "en"
                       ? // console.log(this.state.subCategoriesEnglish,)
-                        this.state.subCategoriesEnglish?.map((data) => {
-                          let selectedSubCat =
-                            this.state.selectedSubCategoryEnglish?.value ==
+                      this.state.subCategoriesEnglish?.map((data) => {
+                        let selectedSubCat =
+                          this.state.selectedSubCategoryEnglish?.value ==
                             data.value
-                              ? "selected"
-                              : "";
-                          return (
-                            <option
-                              value={JSON.stringify(data)}
-                              selectedSubCat
-                              style={
-                                this.state.selectedSubCategoryEnglish?.value ==
+                            ? "selected"
+                            : "";
+                        return (
+                          <option
+                            value={JSON.stringify(data)}
+                            selectedSubCat
+                            style={
+                              this.state.selectedSubCategoryEnglish?.value ==
                                 data.value
-                                  ? selectedOptionStyle
-                                  : optionStyle
-                              }
-                            >
-                              {data.label}
-                            </option>
-                          );
-                        })
+                                ? selectedOptionStyle
+                                : optionStyle
+                            }
+                          >
+                            {data.label}
+                          </option>
+                        );
+                      })
                       : this.state.subCategoriesArabic.map((data) => {
-                          let selectedSubCat =
-                            this.state.selectedSubCategoryArabic?.value ==
+                        let selectedSubCat =
+                          this.state.selectedSubCategoryArabic?.value ==
                             data.value
-                              ? "selected"
-                              : "";
-                          return (
-                            <option
-                              value={JSON.stringify(data)}
-                              selectedSubCat
-                              style={
-                                this.state.selectedSubCategoryArabic?.value ==
+                            ? "selected"
+                            : "";
+                        return (
+                          <option
+                            value={JSON.stringify(data)}
+                            selectedSubCat
+                            style={
+                              this.state.selectedSubCategoryArabic?.value ==
                                 data.value
-                                  ? selectedOptionStyle
-                                  : optionStyle
-                              }
-                            >
-                              {data.label}
-                            </option>
-                          );
-                        })}
+                                ? selectedOptionStyle
+                                : optionStyle
+                            }
+                          >
+                            {data.label}
+                          </option>
+                        );
+                      })}
                   </select>
                 </div>
               </Col>
@@ -942,11 +942,10 @@ class Products extends Component {
                   }}
                 >
                   <span
-                    className={`item-count text-secondary text-right small ${
-                      this.props.global?.activeLanguage === "ar"
-                        ? "item-count-Arabic"
-                        : ""
-                    }`}
+                    className={`item-count text-secondary text-right small ${this.props.global?.activeLanguage === "ar"
+                      ? "item-count-Arabic"
+                      : ""
+                      }`}
                   >
                     {this.state.totalProducts || 0}{" "}
                     {this.props.global?.activeLanguage === "en"
@@ -980,48 +979,48 @@ class Products extends Component {
                     </option>
                     {global?.activeLanguage === "en"
                       ? // console.log(this.state.subCategoriesEnglish,)
-                        this.state.sortingListEnglish?.map((data) => {
-                          let selectedSort =
-                            this.state.selectedSortingEnglish?.value ==
+                      this.state.sortingListEnglish?.map((data) => {
+                        let selectedSort =
+                          this.state.selectedSortingEnglish?.value ==
                             data.value
-                              ? "selected"
-                              : "";
-                          return (
-                            <option
-                              value={JSON.stringify(data)}
-                              selectedSort
-                              style={
-                                this.state.selectedSortingEnglish?.value ==
+                            ? "selected"
+                            : "";
+                        return (
+                          <option
+                            value={JSON.stringify(data)}
+                            selectedSort
+                            style={
+                              this.state.selectedSortingEnglish?.value ==
                                 data.value
-                                  ? selectedOptionStyle
-                                  : optionStyle
-                              }
-                            >
-                              {data.label}
-                            </option>
-                          );
-                        })
+                                ? selectedOptionStyle
+                                : optionStyle
+                            }
+                          >
+                            {data.label}
+                          </option>
+                        );
+                      })
                       : this.state.sortingListArabic?.map((data) => {
-                          let selectedSort =
-                            this.state.selectedSortingEnglish?.value ==
+                        let selectedSort =
+                          this.state.selectedSortingEnglish?.value ==
                             data.value
-                              ? "selected"
-                              : "";
-                          return (
-                            <option
-                              value={JSON.stringify(data)}
-                              selectedSort
-                              style={
-                                this.state.selectedSortingArabic?.value ==
+                            ? "selected"
+                            : "";
+                        return (
+                          <option
+                            value={JSON.stringify(data)}
+                            selectedSort
+                            style={
+                              this.state.selectedSortingArabic?.value ==
                                 data.value
-                                  ? selectedOptionStyle
-                                  : optionStyle
-                              }
-                            >
-                              {data.label}
-                            </option>
-                          );
-                        })}
+                                ? selectedOptionStyle
+                                : optionStyle
+                            }
+                          >
+                            {data.label}
+                          </option>
+                        );
+                      })}
                   </select>
                 </div>
               </Col>

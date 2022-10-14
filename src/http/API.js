@@ -11,14 +11,30 @@ export const API = axios.create({
 API.interceptors.request.use(
   (request) => {
     if (request) {
-      store.dispatch({ type: "SHOW_SPINNER" });
-
-      //perform the manipulation here and change the request object
-      // alert("request called")
+      if (
+        request.url != "/all_widgets/60afb414873ead1356428ec2" &&
+        request.url != "/all_widgets/60afdb7be1666745600ebff2" &&
+        request.url != "/all_widgets/60affc91d79f7f058906b5f2" &&
+        request.url != "/pages" &&
+        request.url != "/emirates" &&
+        request.url != "/categories" &&
+        request.url != "/register" &&
+        request.url != "/filteredProduct/null/null/Recommended?page=all" &&
+        request.url != "/product_list/null/null/Recommended?page=all" &&
+        request.url.startsWith("/product_list/")
+      ) {
+        store.dispatch({
+          type: "SHOW_SPINNER",
+        });
+      }
       if (request.url.startsWith("/auth/filteredProduct")) {
         // store.dispatch({ type: "SHOW_SPINNER" });
-        store.dispatch({ type: "EMPTY_PRODUCTS" });
+        store.dispatch({
+          type: "EMPTY_PRODUCTS",
+        });
       }
+      //perform the manipulation here and change the request object
+      // alert("request called")
     }
     return {
       ...request,

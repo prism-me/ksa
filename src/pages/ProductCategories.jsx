@@ -49,7 +49,7 @@ class ProductCategories extends Component {
 
   componentDidMount() {
     this.props.getCategories();
-    API.get(`/filteredProduct/${null}/${null}/${"Recommended"}?page=all`)
+    API.get(`/product_list/${null}/${null}/${"Recommended"}?page=all`)
       .then((response) => {
         this.setState({
           recommendedProducts: response.data?.data,

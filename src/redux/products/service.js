@@ -5,8 +5,12 @@ export async function getAllProducts(page) {
 }
 
 export async function getAllCategories() {
-  return API.get(`/categories`);
+  return API.get(`/category_list`);
 }
 export async function getCategoryProducts(category, page, subcategory, filter) {
-  return API.get(`/filteredProduct/${category || null}/${subcategory || null}/${filter || null}?page=${page || 1}`);
+  return API.get(
+    `/product_list/${category || null}/${subcategory || null}/${
+      filter || null
+    }?page=${page || 1}`
+  );
 }

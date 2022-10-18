@@ -11,7 +11,6 @@ import { getCategoryProducts } from "../redux/products";
 import { constants } from "../utils/constants";
 
 class ProductDetails extends Component {
-
   constructor(props) {
     super(props);
     this.letsSetState = this.letsSetState.bind(this);
@@ -22,6 +21,7 @@ class ProductDetails extends Component {
     product: "",
     currentPage: 1,
     products: this.props.products,
+    showProduct: true,
     breadCrumbItemsEnglish: [
       {
         text: "Home",
@@ -82,14 +82,14 @@ class ProductDetails extends Component {
     this.setState({
       product: data,
     });
-  }
+  };
   componentDidMount() {
     if (this.props.match.params.id && this.props.match.params.id !== "") {
       API.get(`/products/${this.props.match.params.id}`)
         .then((response) => {
           if (response.status === 200 || response.status === 201) {
             if (response.data) {
-              this.letsSetState(response.data)
+              this.letsSetState(response.data);
             }
             this.props.getCategoryProducts(
               response.data?.categories?.route,
@@ -101,7 +101,6 @@ class ProductDetails extends Component {
             );
             let breadCrumbItemsEnglish = [...this.state.breadCrumbItemsEnglish];
             let breadCrumbItemsArabic = [...this.state.breadCrumbItemsArabic];
-
 
             let prod_category = this.props.categories?.find(
               (x) => x._id === response.data.category
@@ -126,14 +125,16 @@ class ProductDetails extends Component {
 
             //setting product name
             breadCrumbItemsEnglish[4].text = response.data?.name;
-            breadCrumbItemsEnglish[4].link = `/${this.props.global?.activeLanguage}/product/` + encodeURIComponent(response.data?.route);
+            breadCrumbItemsEnglish[4].link =
+              `/${this.props.global?.activeLanguage}/product/` +
+              encodeURIComponent(response.data?.route);
             this.setState({ breadCrumbItemsEnglish });
 
             breadCrumbItemsArabic[4].text = response.data?.arabic?.name;
-            breadCrumbItemsArabic[4].link = `/${this.props.global?.activeLanguage}/product/` + encodeURIComponent(response.data?.route);
+            breadCrumbItemsArabic[4].link =
+              `/${this.props.global?.activeLanguage}/product/` +
+              encodeURIComponent(response.data?.route);
             this.setState({ breadCrumbItemsArabic });
-
-
           } else {
           }
         })
@@ -166,6 +167,10 @@ class ProductDetails extends Component {
             this.setState({
               product: response.data,
             });
+
+            if (!this.state.showProduct) {
+              this.setShowProduct();
+            }
             this.props.getCategoryProducts(
               response.data?.categories?.route,
               "all",
@@ -177,12 +182,18 @@ class ProductDetails extends Component {
 
             let breadCrumbItemsEnglish = [...this.state.breadCrumbItemsEnglish];
             let breadCrumbItemsArabic = [...this.state.breadCrumbItemsArabic];
-            breadCrumbItemsEnglish[breadCrumbItemsEnglish.length - 1].text = response.data?.name;
-            breadCrumbItemsEnglish[breadCrumbItemsEnglish.length - 1].link = `/${this.props.global?.activeLanguage}/product/` + encodeURIComponent(response.data?.route);
+            breadCrumbItemsEnglish[breadCrumbItemsEnglish.length - 1].text =
+              response.data?.name;
+            breadCrumbItemsEnglish[breadCrumbItemsEnglish.length - 1].link =
+              `/${this.props.global?.activeLanguage}/product/` +
+              encodeURIComponent(response.data?.route);
             this.setState({ breadCrumbItemsEnglish });
 
-            breadCrumbItemsArabic[breadCrumbItemsArabic.length - 1].text = response.data?.arabic?.name;
-            breadCrumbItemsArabic[breadCrumbItemsArabic.length - 1].link = `/${this.props.global?.activeLanguage}/product/` + encodeURIComponent(response.data?.route);
+            breadCrumbItemsArabic[breadCrumbItemsArabic.length - 1].text =
+              response.data?.arabic?.name;
+            breadCrumbItemsArabic[breadCrumbItemsArabic.length - 1].link =
+              `/${this.props.global?.activeLanguage}/product/` +
+              encodeURIComponent(response.data?.route);
             this.setState({ breadCrumbItemsArabic });
           }
         })
@@ -193,6 +204,9 @@ class ProductDetails extends Component {
     }
   }
 
+  setShowProduct = () => {
+    this.setState({ showProduct: !this.state.showProduct });
+  };
 
   render() {
     return (
@@ -208,7 +222,7 @@ class ProductDetails extends Component {
               constants.seo_description
             }
           />
-           <link rel="canonical" href={window.location.href} />
+          <link rel="canonical" href={window.location.href} />
         </Helmet>
         <BreadCrumbs
           breadCrumbItems={
@@ -220,6 +234,7 @@ class ProductDetails extends Component {
         />
 
         <Overview
+          showProduct={this.state.showProduct}
           {...this.state.product}
           isArabic={this.props.global?.activeLanguage === "ar"}
           language={this.props.global?.activeLanguage}
@@ -230,6 +245,7 @@ class ProductDetails extends Component {
           language={this.props.global?.activeLanguage}
         />
         <RecommendedSlider
+          setShowProduct={this.setShowProduct}
           currentProduct={this.state.product}
           products={this.props.categoryProducts}
           isArabic={this.props.global?.activeLanguage === "ar"}
@@ -237,13 +253,13 @@ class ProductDetails extends Component {
         />
         {this.state.product?.reviews?.filter((x) => x.is_approved === true)
           ?.length > 0 && (
-            <ProductReviews
-              reviews={this.state.product?.reviews?.filter(
-                (x) => x.is_approved === true
-              )}
-              language={this.props.global?.activeLanguage}
-            />
-          )}
+          <ProductReviews
+            reviews={this.state.product?.reviews?.filter(
+              (x) => x.is_approved === true
+            )}
+            language={this.props.global?.activeLanguage}
+          />
+        )}
       </div>
     );
   }

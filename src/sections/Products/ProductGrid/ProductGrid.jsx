@@ -5,10 +5,11 @@ import Pagination from "react-bootstrap/Pagination";
 import GridItem from "../../../components/GridItem";
 // import { categoryProducts } from "../../../utils/data";
 import ClipLoader from "react-spinners/BounceLoader";
+import { connect } from "react-redux";
 
 const perPage = 12;
 
-export default function ProductGrid(props) {
+function ProductGrid(props) {
   const [paginationItems, setPaginationItems] = useState(null);
   const [activePage, setActivePage] = useState(props.currentPage);
   // const [disableFirst, setDisableFirst] = useState(false);
@@ -92,66 +93,81 @@ export default function ProductGrid(props) {
     <div className="products-grid">
       <Container>
         <Row>
-          {props.products?.length > 0 ? (
-            props.products.map((product) => (
-              <Col xs={12} sm={4}>
-                <GridItem
-                  id={product._id}
-                  route={product.route}
-                  name={props.isArabic ? product.arabic?.name : product.name}
-                  image={product.featured_img}
-                  rating={product.rating}
-                  avg_rating={product.avg_rating}
-                  rating_count={product.reviews?.length || 0}
-                  firstcry_link={product.firstcry_link}
-                  isBanner={
-                    // props.bannerType?.value !== "" ||
-                    // props.bannerType?.value !== "Popularity"
-                    true
-                  }
-                  bannerType={
-                    product.sortings?.find(
-                      (x) =>
-                        x.toLowerCase() ===
-                        props.bannerType?.value?.toLowerCase()
-                    ) || product.sortings?.[0]
-                  }
-                />
-              </Col>
-            ))
-          ) : (
-            <div className="d-flex p-5 w-100 justify-content-center align-items-center">
-              <p style={{ color: "#aaa", fontSize: "20px" }}>
-                {props.isArabic ? (
-                  <em>
-                    {" "}
-                    سيتم تحديث المنتجات في هذه الفئة قريباً. ابقى على اطلاع!
-                  </em>
+          {!props.showSpinner ? (
+            props.products?.length > 0 ? (
+              props.products.map((product) => (
+                <Col xs={12} sm={4}>
+                  <GridItem
+                    id={product._id}
+                    route={product.route}
+                    name={props.isArabic ? product.arabic?.name : product.name}
+                    image={product.featured_img}
+                    rating={product.rating}
+                    avg_rating={product.avg_rating}
+                    rating_count={product.reviews?.length || 0}
+                    firstcry_link={product.firstcry_link}
+                    isBanner={
+                      // props.bannerType?.value !== "" ||
+                      // props.bannerType?.value !== "Popularity"
+                      true
+                    }
+                    bannerType={
+                      product.sortings?.find(
+                        (x) =>
+                          x.toLowerCase() ===
+                          props.bannerType?.value?.toLowerCase()
+                      ) || product.sortings?.[0]
+                    }
+                  />
+                </Col>
+              ))
+            ) : (
+              <>
+                {props.fetchMessage ? (
+                  <div className="d-flex p-5 w-100 justify-content-center align-items-center">
+                    <p style={{ color: "#aaa", fontSize: "20px" }}>
+                      {props.isArabic ? (
+                        <em> سيتم تحديث منتجات هذه الفئة قريباً!</em>
+                      ) : (
+                        <em>
+                          {" "}
+                          Products of this Category Will Be Updated Soon!{" "}
+                        </em>
+                      )}
+                    </p>
+                  </div>
                 ) : (
-                  <em>
-                    {" "}
-                    The products for this category will be updated soon. Stay
-                    Tuned!{" "}
-                  </em>
+                  <div
+                    className={`d-flex flex-column text-center align-items-center justify-content-center`}
+                    style={{
+                      // position: "absolute",
+                      zIndex: 999,
+                      height: "300px",
+                      width: "100%",
+                      background: "rgba(255,255,255,0.8)",
+                      // background: "#fff",
+                    }}
+                  >
+                    <ClipLoader color={"#e65550"} loading={true} size={80} />
+                  </div>
                 )}
-              </p>
+              </>
+            )
+          ) : (
+            <div
+              className={`d-flex flex-column text-center align-items-center justify-content-center`}
+              style={{
+                // position: "absolute",
+                zIndex: 999,
+                height: "200px",
+                width: "100%",
+                background: "rgba(255,255,255,0.8)",
+                // background: "#fff",
+              }}
+            >
+              <ClipLoader color={"#e65550"} loading={true} size={80} />
             </div>
           )}
-          {/* //   (
-          //   <div
-          //     className={`d-flex flex-column text-center align-items-center justify-content-center`}
-          //     style={{
-          //       // position: "absolute",
-          //       zIndex: 999,
-          //       height: "200px",
-          //       width: "100%",
-          //       background: "rgba(255,255,255,0.8)",
-          //       // background: "#fff",
-          //     }}
-          //   >
-          //     <ClipLoader color={"#e65550"} loading={true} size={80} />
-          //   </div>
-          // ) */}
         </Row>
         <div className="pagination-wrapper">
           {props.totalProducts > 0 && (
@@ -162,3 +178,16 @@ export default function ProductGrid(props) {
     </div>
   );
 }
+const mapStateToProps = (state) => {
+  return {
+    showSpinner: state?.globalReducer?.showSpinner,
+    global: state.globalReducer,
+    fetchMessage: state.productReducer.message,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {};
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ProductGrid);

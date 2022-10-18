@@ -1,4 +1,5 @@
 import { types } from "./types";
+import { REHYDRATE } from "redux-persist/lib/constants";
 
 let initialState = {
   allProducts: [],
@@ -7,6 +8,7 @@ let initialState = {
   categoryProducts: [],
   categories: [],
   totalProducts: 0,
+  message: false,
 };
 export const productReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -34,10 +36,17 @@ export const productReducer = (state = initialState, action) => {
         ],
       };
     case types.GET_CATEGORY_PRODUCTS_SUCCESS:
+      let text = "";
+      if (!action.payload.totalProducts > 0) {
+        text = true;
+      } else {
+        text = false;
+      }
       return {
         ...state,
         products: [...action.payload.products],
         totalProducts: action.payload.totalProducts,
+        message: text,
       };
     case "GET_ALL_CATEGORY_PRODUCTS_SUCCESS":
       // debugger;
@@ -47,6 +56,17 @@ export const productReducer = (state = initialState, action) => {
       };
     case "EMPTY_PRODUCTS":
       return { ...state, products: [], totalProducts: 0 };
+    case REHYDRATE: {
+      let stateWithProducts = JSON.parse(JSON.stringify(action.payload || ""));
+      let prodReducer = stateWithProducts.productReducer || [];
+      prodReducer.allProducts = [];
+      prodReducer.categoryProducts = [];
+      prodReducer.products = [];
+      prodReducer.totalProducts = [];
+      prodReducer.userWishlistProducts = [];
+      prodReducer.categories = prodReducer.categories || [];
+      return prodReducer;
+    }
     default: {
       return state;
     }

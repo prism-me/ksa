@@ -22,6 +22,10 @@ class Home extends Component {
       let categories = [
         ...this.props.categories?.filter((x) => x.parent_id === null),
       ];
+      console.log(
+        "🚀 ~ file: Home.jsx:25 ~ Home ~ componentDidUpdate ~ categories",
+        categories
+      );
       this.setState({
         categories,
       });
@@ -29,8 +33,13 @@ class Home extends Component {
   }
   render() {
     const { global } = this.props;
+    console.log(
+      "🚀 ~ file: Home.jsx:36 ~ Home ~ render ~ global?.activeLanguage",
+      global?.activeLanguage
+    );
+
     return (
-      <div>
+      <>
         <Helmet htmlAttributes>
           <html lang="en" />
           <title>
@@ -88,7 +97,7 @@ class Home extends Component {
           isArabic={global?.activeLanguage === "ar"}
           language={global?.activeLanguage}
         />
-      </div>
+      </>
     );
   }
 }

@@ -1,16 +1,7 @@
 import React from "react";
-import {
-  Badge,
-  Col,
-  Container,
-  Row,
-} from "react-bootstrap";
+import { Badge, Col, Container, Row } from "react-bootstrap";
 import FeedingAdvisor from "../../../assets/images/feeding-advisor/feeding-advisor.jpeg";
-import {
-  FaRegEye,
-  FaRegComments,
-  FaRegCalendarAlt,
-} from "react-icons/fa";
+import { FaRegEye, FaRegComments, FaRegCalendarAlt } from "react-icons/fa";
 
 // const currentDate = new Date().toLocaleDateString();
 const MilkDrinks = (props) => {
@@ -20,7 +11,7 @@ const MilkDrinks = (props) => {
         <div className="content-wrap">
           <div className="image-wrap">
             <img
-              src={props.banner_img}
+              src={process.env.REACT_APP_IMAGE_BASE_URL + props.banner_img}
               alt="FeedingAdvisor"
               className="image"
             />
@@ -30,15 +21,13 @@ const MilkDrinks = (props) => {
             <Row>
               <Col sm={8}>
                 <Badge variant="secondary" className="mb-2">
-                  {props.language === "en" ? "Article #" : "مقالة #"} {props.index + 1}
+                  {props.language === "en" ? "Article #" : "مقالة #"}{" "}
+                  {props.index + 1}
                 </Badge>
-                <Badge
-                  variant="secondary"
-                  className="ml-2 mb-2"
-                >
-                  {props.language === "en" ?
-                    props?.categories?.title :
-                    props?.arabiCatename?.categories?.arabic?.title}
+                <Badge variant="secondary" className="ml-2 mb-2">
+                  {props.language === "en"
+                    ? props?.categories?.title
+                    : props?.arabiCatename?.categories?.arabic?.title}
                 </Badge>
                 <h2>{props.title}</h2>
                 {props.content?.map((x) => (
@@ -51,7 +40,7 @@ const MilkDrinks = (props) => {
                     ></div>
                     {x.image ? (
                       <img
-                        src={x.image}
+                        src={process.env.REACT_APP_IMAGE_BASE_URL + x.image}
                         alt=""
                         style={{ marginBottom: "1rem" }}
                       />
@@ -61,7 +50,12 @@ const MilkDrinks = (props) => {
               </Col>
               <Col sm={4}>
                 <div className="detailed-image">
-                  <img src={props.featured_img} alt="" />
+                  <img
+                    src={
+                      process.env.REACT_APP_IMAGE_BASE_URL + props.featured_img
+                    }
+                    alt=""
+                  />
                 </div>
               </Col>
             </Row>

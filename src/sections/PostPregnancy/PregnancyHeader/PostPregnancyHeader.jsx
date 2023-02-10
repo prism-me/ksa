@@ -11,23 +11,16 @@ function PostPregnancyHeader({ data, language }) {
         <Row>
           <Col sm={7}>
             <div className="section-title-underlined">
-              <h1>
-                {
-                  constants?.site_content
-                    ?.post_pregnancy_title[language]
-                }
-              </h1>
+              <h1>{constants?.site_content?.post_pregnancy_title[language]}</h1>
               {/* <h1>Post Pregnancy</h1> */}
             </div>
             {/* <p>After Birth (while still in hospital)</p> */}
             <div
-                className={`description-list ${
-                    language === "ar"
-                        ? "description-list-Arabic"
-                        : ""
-                }`}
-                // className="description-list"
-                >
+              className={`description-list ${
+                language === "ar" ? "description-list-Arabic" : ""
+              }`}
+              // className="description-list"
+            >
               {/* <ul>
                 <li>
                   <span className="icon-pebble">
@@ -106,7 +99,7 @@ function PostPregnancyHeader({ data, language }) {
           <Col sm={5}>
             <div className="image-wrapper">
               <img
-                src={data?.featured_img}
+                src={process.env.REACT_APP_IMAGE_BASE_URL + data?.featured_img}
                 alt="post-pregnancy"
               />
             </div>

@@ -74,7 +74,10 @@ function AboutUsTab(props) {
           <div
             className="section-header"
             style={{
-              backgroundImage: `url(${aboutusData?.sectionOne?.banner_image})`,
+              backgroundImage: `url(${
+                process.env.REACT_APP_IMAGE_BASE_URL +
+                aboutusData?.sectionOne?.banner_image
+              })`,
             }}
           ></div>
           <Container>
@@ -82,7 +85,13 @@ function AboutUsTab(props) {
               <Col sm={4}>
                 <div className="image-column">
                   <div className="article-image">
-                    <img src={aboutusData?.sectionOne?.featured_image} alt="" />
+                    <img
+                      src={
+                        process.env.REACT_APP_IMAGE_BASE_URL +
+                        aboutusData?.sectionOne?.featured_image
+                      }
+                      alt=""
+                    />
                   </div>
                 </div>
               </Col>
@@ -136,7 +145,10 @@ function AboutUsTab(props) {
                   <div
                     className="video-thumbnail"
                     style={{
-                      backgroundImage: `url(${aboutusData?.sectionTwo?.video_thumbnail})`,
+                      backgroundImage: `url(${
+                        process.env.REACT_APP_IMAGE_BASE_URL +
+                        aboutusData?.sectionTwo?.video_thumbnail
+                      })`,
                     }}
                   >
                     <GoPlay

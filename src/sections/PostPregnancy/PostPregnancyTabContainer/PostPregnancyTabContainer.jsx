@@ -46,7 +46,11 @@ function PostPregnancyTabContainer() {
             <Tab eventKey={x.key} title={x.tabTitle}>
               <div className="tab-wrapper py-4">
                 <Container>
-                  <img src={x.firstImage} style={{ width: "100%" }} alt="" />
+                  <img
+                    src={process.env.REACT_APP_IMAGE_BASE_URL + x.firstImage}
+                    style={{ width: "100%" }}
+                    alt=""
+                  />
                   <p className="mt-4">{x.feedingText}</p>
                 </Container>
               </div>

@@ -40,7 +40,10 @@ function PigeonLogo(props) {
           ></p>
         </div>
         <div className="logo">
-          <img src={pigeonLogoData?.logo} alt="Pigeon Logo" />
+          <img
+            src={process.env.REACT_APP_IMAGE_BASE_URL + pigeonLogoData?.logo}
+            alt="Pigeon Logo"
+          />
         </div>
       </Container>
     </div>

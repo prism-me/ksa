@@ -1,8 +1,5 @@
 import React from "react";
 import { Col, Container, Row } from "react-bootstrap";
-import abdomenImage from "./../../../assets/images/post-pregnancy/post-pregnancy_01.jpeg";
-import hipsImage from "./../../../assets/images/post-pregnancy/post-pregnancy_02.jpeg";
-import legsImage from "./../../../assets/images/post-pregnancy/post-pregnancy_03.jpeg";
 
 function GraphicInfo({ data }) {
   return (
@@ -14,7 +11,10 @@ function GraphicInfo({ data }) {
               <div className="inner-section">
                 <h5>{x.title}</h5>
                 <div dangerouslySetInnerHTML={{ __html: x?.description }}></div>
-                <img src={x?.featured_img} alt={x.title} />
+                <img
+                  src={process.env.REACT_APP_IMAGE_BASE_URL + x?.featured_img}
+                  alt={x.title}
+                />
               </div>
             </Col>
           ))}

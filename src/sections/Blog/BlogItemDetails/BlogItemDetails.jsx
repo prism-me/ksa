@@ -12,7 +12,10 @@ const BlogItemDetails = (props) => {
         <div className="content-wrap">
           <div className="image-wrap">
             <img
-              src={props?.activeArticle?.banner_img}
+              src={
+                process.env.REACT_APP_IMAGE_BASE_URL +
+                props?.activeArticle?.banner_img
+              }
               alt="FeedingAdvisor"
               className="image"
             />
@@ -38,7 +41,13 @@ const BlogItemDetails = (props) => {
               </Col>
               <Col sm={4}>
                 <div className="detailed-image">
-                  <img src={props?.activeArticle?.featured_img} alt="" />
+                  <img
+                    src={
+                      process.env.REACT_APP_IMAGE_BASE_URL +
+                      props?.activeArticle?.featured_img
+                    }
+                    alt=""
+                  />
                 </div>
               </Col>
             </Row>

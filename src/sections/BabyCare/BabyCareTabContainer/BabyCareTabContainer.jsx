@@ -61,14 +61,19 @@ function BabyCareTabContainer(props) {
           </Col>
           <Col sm={2}>
             <div className="image-wrapper">
-              <img src={props.image} alt="Baby Care" />
+              <img
+                src={process.env.REACT_APP_IMAGE_BASE_URL + props.image}
+                alt="Baby Care"
+              />
             </div>
           </Col>
         </Row>
       </Container>
       <div className="baby-care-tabs">
         <Tabs
-          defaultActiveKey={props.language === "en" ? "0th-Month" : "-الشهر-صفر"}
+          defaultActiveKey={
+            props.language === "en" ? "0th-Month" : "-الشهر-صفر"
+          }
           activeKey={activeTab}
           onSelect={(name) => setActiveTab(name)}
         >
@@ -121,13 +126,13 @@ function BabyCareTabContainer(props) {
               <span
                 className="nav-icon-left"
                 onClick={
-                  activeTab === "0th-Month" ? () => { } : () => setBackKey()
+                  activeTab === "0th-Month" ? () => {} : () => setBackKey()
                 }
               ></span>
               <span
                 className="nav-icon-right"
                 onClick={
-                  activeTab === "1Year-and-1M" ? () => { } : () => setNextKey()
+                  activeTab === "1Year-and-1M" ? () => {} : () => setNextKey()
                 }
               ></span>
             </div>
@@ -140,13 +145,13 @@ function BabyCareTabContainer(props) {
               <span
                 className={`nav-icon-left nav-icon-left-Arabic`}
                 onClick={
-                  activeTab === "-سنة-وشهر‎" ? () => { } : () => setNextKey()
+                  activeTab === "-سنة-وشهر‎" ? () => {} : () => setNextKey()
                 }
               ></span>
               <span
                 className={`nav-icon-right nav-icon-right-Arabic`}
                 onClick={
-                  activeTab === "-الشهر-صفر" ? () => { } : () => setBackKey()
+                  activeTab === "-الشهر-صفر" ? () => {} : () => setBackKey()
                 }
               ></span>
             </div>

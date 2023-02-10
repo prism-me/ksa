@@ -22,13 +22,23 @@ export default function VideoSection({
           <Col xs={12} sm={7}>
             <div className="description">
               {/* <h3 className="title">{videoTitle}</h3> */}
-              {productUrl == window.location.pathname ?
-                activeLanguage == 'en' ?
-                <p dangerouslySetInnerHTML={{ __html: defaultContentProducts?.video_description }}></p> :
-                  <p dangerouslySetInnerHTML={{ __html: defaultContentProducts.arabic?.video_description }}></p>
-                :
+              {productUrl == window.location.pathname ? (
+                activeLanguage == "en" ? (
+                  <p
+                    dangerouslySetInnerHTML={{
+                      __html: defaultContentProducts?.video_description,
+                    }}
+                  ></p>
+                ) : (
+                  <p
+                    dangerouslySetInnerHTML={{
+                      __html: defaultContentProducts.arabic?.video_description,
+                    }}
+                  ></p>
+                )
+              ) : (
                 <p dangerouslySetInnerHTML={{ __html: videoDescription }}></p>
-              }
+              )}
             </div>
           </Col>
           <Col xs={12} sm={5}>

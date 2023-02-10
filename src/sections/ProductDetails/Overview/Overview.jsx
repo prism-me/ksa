@@ -106,8 +106,8 @@ function Overview(props) {
       if (activeVariant?.name && props.is_new != 1) {
         return activeVariant?.variation_images?.reverse().map((x) => {
           return {
-            original: x.image,
-            thumbnail: x.image,
+            original: process.env.REACT_APP_IMAGE_BASE_URL + x.image,
+            thumbnail: process.env.REACT_APP_IMAGE_BASE_URL + x.image,
             thumbnailClass: "thumbnail-override",
             originalClass: "image-override",
             description: "",
@@ -123,8 +123,8 @@ function Overview(props) {
           ?.reverse()
           .map((x) => {
             return {
-              original: x.image,
-              thumbnail: x.image,
+              original: process.env.REACT_APP_IMAGE_BASE_URL + x.image,
+              thumbnail: process.env.REACT_APP_IMAGE_BASE_URL + x.image,
               thumbnailClass: "thumbnail-override",
               originalClass: "image-override",
               description: "",
@@ -139,8 +139,8 @@ function Overview(props) {
           ?.map((x) => {
             // console.log("else xx : ", x)
             return {
-              original: x.image,
-              thumbnail: x.image,
+              original: process.env.REACT_APP_IMAGE_BASE_URL + x.image,
+              thumbnail: process.env.REACT_APP_IMAGE_BASE_URL + x.image,
               thumbnailClass: "thumbnail-override",
               originalClass: "image-override",
               description: "",
@@ -156,8 +156,8 @@ function Overview(props) {
           ?.reverse()
           .map((x) => {
             return {
-              original: x.image,
-              thumbnail: x.image,
+              original: process.env.REACT_APP_IMAGE_BASE_URL + x.image,
+              thumbnail: process.env.REACT_APP_IMAGE_BASE_URL + x.image,
               thumbnailClass: "thumbnail-override",
               originalClass: "image-override",
               description: "",
@@ -175,8 +175,8 @@ function Overview(props) {
           ?.reverse()
           .map((x) => {
             return {
-              original: x.image,
-              thumbnail: x.image,
+              original: process.env.REACT_APP_IMAGE_BASE_URL + x.image,
+              thumbnail: process.env.REACT_APP_IMAGE_BASE_URL + x.image,
               thumbnailClass: "thumbnail-override",
               originalClass: "image-override",
               description: "",
@@ -191,8 +191,8 @@ function Overview(props) {
             ?.reverse()
             ?.map((x) => {
               return {
-                original: x.image,
-                thumbnail: x.image,
+                original: process.env.REACT_APP_IMAGE_BASE_URL + x.image,
+                thumbnail: process.env.REACT_APP_IMAGE_BASE_URL + x.image,
                 thumbnailClass: "thumbnail-override",
                 originalClass: "image-override",
                 description: "",
@@ -207,8 +207,8 @@ function Overview(props) {
             ?.map((x) => {
               // console.log("else xx : ", x)
               return {
-                original: x.image,
-                thumbnail: x.image,
+                original: process.env.REACT_APP_IMAGE_BASE_URL + x.image,
+                thumbnail: process.env.REACT_APP_IMAGE_BASE_URL + x.image,
                 thumbnailClass: "thumbnail-override",
                 originalClass: "image-override",
                 description: "",
@@ -509,7 +509,10 @@ function Overview(props) {
                       <FaTwitter className="social-icon" />
                     </TwitterShareButton>
                     <PinterestShareButton
-                      media={props.featured_img}
+                      media={
+                        process.env.REACT_APP_IMAGE_BASE_URL +
+                        props.featured_img
+                      }
                       url={`https://www.pigeonarabia.com/${
                         props.global.activeLanguage
                       }/product/${encodeURIComponent(props.route)}`}

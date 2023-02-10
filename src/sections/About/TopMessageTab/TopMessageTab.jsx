@@ -38,7 +38,12 @@ function TopMessageTab(props) {
               }`}
               // className="graphic-section"
             >
-              <img src={topMessageData?.image} alt="CEO Intro" />
+              <img
+                src={
+                  process.env.REACT_APP_IMAGE_BASE_URL + topMessageData?.image
+                }
+                alt="CEO Intro"
+              />
             </div>
             <div className="text-section">
               <div

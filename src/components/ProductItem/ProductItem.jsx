@@ -8,13 +8,15 @@ function ProductItem(props) {
     <Col
       xs={props.xs}
       sm={props.sm}
-      className={
-        props.hideTitle ? "category-grid-tile" : null
-      }
+      className={props.hideTitle ? "category-grid-tile" : null}
     >
       <div
         className="product-item"
-        style={{ backgroundImage: `url(${props.image})` }}
+        style={{
+          backgroundImage: `url(${
+            process.env.REACT_APP_IMAGE_BASE_URL + props.image
+          })`,
+        }}
       >
         <Link
           to={

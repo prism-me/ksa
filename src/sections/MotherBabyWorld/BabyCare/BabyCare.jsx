@@ -13,23 +13,22 @@ const BabyCare = ({ language }) => {
     <div className="baby-care-section">
       <Container>
         <Row>
-          {constants?.site_content?.babyCare?.map(
-            (x, index) => (
-              <React.Fragment key={index + x.title}>
-                <Col sm={12} md={4}>
-                  <div className="baby-care-content">
-                    <div className="baby-care-image-wrap">
-                      <img
-                        src={x.image}
-                        alt={x.title[language]}
-                        className="baby-care-image"
-                      />
-                    </div>
-                    <div className="baby-care-text">
-                      {/* <h6>{x.title}</h6> */}
-                      <h6>{x.title[language]}</h6>
-                      <p>{x.description[language]}</p>
-                      {/* <h6
+          {constants?.site_content?.babyCare?.map((x, index) => (
+            <React.Fragment key={index + x.title}>
+              <Col sm={12} md={4}>
+                <div className="baby-care-content">
+                  <div className="baby-care-image-wrap">
+                    <img
+                      src={x.image}
+                      alt={x.title[language]}
+                      className="baby-care-image"
+                    />
+                  </div>
+                  <div className="baby-care-text">
+                    {/* <h6>{x.title}</h6> */}
+                    <h6>{x.title[language]}</h6>
+                    <p>{x.description[language]}</p>
+                    {/* <h6
                       className="read-more"
                       onClick={() =>
                         history.push(`${x.link}`)
@@ -38,30 +37,22 @@ const BabyCare = ({ language }) => {
                       Read more{" "}
                       <FaLongArrowAltRight size="20px" />
                     </h6> */}
-                      {/* <div
+                    {/* <div
                       className="m-btn-simple"
                       onClick={() => history.push(`${x.link}`)}
                     >
                       <span>Learn More</span>
                     </div> */}
-                      <SimpleButton
-                        onClick={() =>
-                          history.push(
-                            `/${language}${x.link}`
-                          )
-                        }
-                      >
-                        {
-                          constants?.site_content
-                            ?.learn_more[language]
-                        }
-                      </SimpleButton>
-                    </div>
+                    <SimpleButton
+                      onClick={() => history.push(`/${language}${x.link}`)}
+                    >
+                      {constants?.site_content?.learn_more[language]}
+                    </SimpleButton>
                   </div>
-                </Col>
-              </React.Fragment>
-            )
-          )}
+                </div>
+              </Col>
+            </React.Fragment>
+          ))}
         </Row>
       </Container>
     </div>

@@ -10,9 +10,7 @@ const GoodToKnowCard = (props) => {
     <div className="goodtoknow-card">
       <Container>
         <Row className="good-to-know-row-reverse">
-          <Col
-            sm={{ span: 7, order: props.textOrder || 0 }}
-          >
+          <Col sm={{ span: 7, order: props.textOrder || 0 }}>
             <div className="text-wrap-good">
               <h5>{props.goodToKnowData?.title}</h5>
 
@@ -27,7 +25,10 @@ const GoodToKnowCard = (props) => {
             <div className="image-wrap-good">
               {props.goodToKnowData?.featured_img && (
                 <img
-                  src={props.goodToKnowData?.featured_img}
+                  src={
+                    process.env.REACT_APP_IMAGE_BASE_URL +
+                    props.goodToKnowData?.featured_img
+                  }
                   alt=""
                   className="good-to-know-image"
                 />

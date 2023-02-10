@@ -21,7 +21,7 @@ import ButtonTheme from "../../../components/ButtonTheme/ButtonTheme";
 import { Link, useHistory } from "react-router-dom";
 import { constants } from "../../../utils/constants";
 import { connect } from "react-redux";
-import {LinkContainer} from "react-router-bootstrap";
+import { LinkContainer } from "react-router-bootstrap";
 // import { categoryProducts } from "./../../../utils/data";
 
 function ProductSlider(props) {
@@ -50,7 +50,7 @@ function ProductSlider(props) {
         infinite
         visibleSlides={visibleSlides}
         isIntrinsicHeight
-        dir = {props.global?.activeLanguage === "en" ? "" : "ltr"}
+        dir={props.global?.activeLanguage === "en" ? "" : "ltr"}
       >
         <Container>
           <Slider>
@@ -79,10 +79,17 @@ function ProductSlider(props) {
                           )
                         }
                       >
-                       {props.global.activeLanguage == 'en' ? 'View Details' : 'عرض التفاصيل'}
+                        {props.global.activeLanguage == "en"
+                          ? "View Details"
+                          : "عرض التفاصيل"}
                       </ButtonTheme>
                     </Link>
-                    <Image src={x.featured_img} hasMasterSpinner={true} />
+                    <Image
+                      src={
+                        process.env.REACT_APP_IMAGE_BASE_URL + x.featured_img
+                      }
+                      hasMasterSpinner={true}
+                    />
                     <p className="slide-title mb-0">
                       {props.isArabic ? x.arabic?.name : x.name}
                     </p>
@@ -122,7 +129,7 @@ function ProductSlider(props) {
         className="btn-view-all"
         size="sm"
       >
-        <Link  to={`/${props.global.activeLanguage}/products`}>
+        <Link to={`/${props.global.activeLanguage}/products`}>
           {constants.site_content.view_all_products[props.language]}
         </Link>
       </ButtonTheme>

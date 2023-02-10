@@ -34,10 +34,16 @@ function GridItem(props) {
                 )
               }
             >
-              {props.global.activeLanguage == 'en' ? 'View Details' : 'عرض التفاصيل'}
+              {props.global.activeLanguage == "en"
+                ? "View Details"
+                : "عرض التفاصيل"}
             </ButtonTheme>
           </Link>
-          <img src={props.image} alt="" className="img-thumbnail" />
+          <img
+            src={process.env.REACT_APP_IMAGE_BASE_URL + props.image}
+            alt=""
+            className="img-thumbnail"
+          />
         </div>
         <div className="description">
           <h6 className="title">{props.name}</h6>

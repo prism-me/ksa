@@ -13,7 +13,7 @@ const FirstTrimester = (props) => {
           <Col xs={12} sm={3} className="d-none d-sm-block">
             <div className="image-wrap">
               <img
-                src={props.image}
+                src={process.env.REACT_APP_IMAGE_BASE_URL + props.image}
                 alt=""
                 className="image"
               />
@@ -21,20 +21,20 @@ const FirstTrimester = (props) => {
           </Col>
           <Col xs={12} sm={9}>
             <div className="heading-wrap">
-              
-                {/* {props.language === "ar"
+              {/* {props.language === "ar"
                   ? `${constants?.site_content?.firstTrimester?.ar}`
                   : `${constants?.site_content?.firstTrimester?.en}`} */}
-                
 
-                {
-                props.language
-                 === "ar" 
-                 ? <h2> الفصل <span> الأول </span></h2>
-                 : <h2><span>1st</span> Trimester</h2>
-                 
-                 }
-              
+              {props.language === "ar" ? (
+                <h2>
+                  {" "}
+                  الفصل <span> الأول </span>
+                </h2>
+              ) : (
+                <h2>
+                  <span>1st</span> Trimester
+                </h2>
+              )}
             </div>
             <TrimesterCard
               content={props.trimesterData?.content}

@@ -10,7 +10,7 @@ function MonthTab(props) {
           <Col sm={3}>
             <div className="image-wrap">
               <img
-                src={props.featured_img}
+                src={process.env.REACT_APP_IMAGE_BASE_URL + props.featured_img}
                 alt=""
                 className="first-image"
               />
@@ -19,10 +19,7 @@ function MonthTab(props) {
           <Col sm={9}>
             {/* <h2>Your Body</h2> */}
             <h2>
-              {
-                constants?.site_content
-                  ?.pregnancy_first_title[props.language]
-              }
+              {constants?.site_content?.pregnancy_first_title[props.language]}
             </h2>
             <div
               dangerouslySetInnerHTML={{
@@ -34,8 +31,7 @@ function MonthTab(props) {
                 <Col sm={6}>
                   <h4>
                     {
-                      constants?.site_content
-                        ?.pregnancy_your_information[
+                      constants?.site_content?.pregnancy_your_information[
                         props.language
                       ]
                     }
@@ -49,8 +45,7 @@ function MonthTab(props) {
                 <Col sm={6}>
                   <h4>
                     {
-                      constants?.site_content
-                        ?.pregnancy_your_baby[
+                      constants?.site_content?.pregnancy_your_baby[
                         props.language
                       ]
                     }

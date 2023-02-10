@@ -120,7 +120,7 @@ const VideoGrid = (props) => {
                 <div className="wrap-iframe">
                   <img
                     // width={'300px'} height={'207px'}
-                    src={x.image || ""}
+                    src={process.env.REACT_APP_IMAGE_BASE_URL + x.image || ""}
                     alt=""
                     srcset=""
                   />

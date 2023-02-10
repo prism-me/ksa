@@ -84,7 +84,9 @@ const MoreDetails = (props) => {
           >
             <ButtonTheme className="facebook-button">
               <FaFacebookF className="facebook-icon" />
-              <span className="d-none d-sm-block">{props.global?.activeLanguage === "en" ? "Facebook" : "فيسبوك" }</span>
+              <span className="d-none d-sm-block">
+                {props.global?.activeLanguage === "en" ? "Facebook" : "فيسبوك"}
+              </span>
             </ButtonTheme>
           </FacebookShareButton>
           <TwitterShareButton
@@ -98,7 +100,9 @@ const MoreDetails = (props) => {
           >
             <ButtonTheme className="twitter-button">
               <FaTwitter className="twitter-icon" />
-              <span className="d-none d-sm-block">{props.global?.activeLanguage === "en" ? "Twitter" : "تويتر" }</span>
+              <span className="d-none d-sm-block">
+                {props.global?.activeLanguage === "en" ? "Twitter" : "تويتر"}
+              </span>
             </ButtonTheme>
           </TwitterShareButton>
           <LinkedinShareButton
@@ -112,12 +116,19 @@ const MoreDetails = (props) => {
           >
             <ButtonTheme className="print-button">
               <FaLinkedinIn className="print-icon" />
-              <span className="d-none d-sm-block">{props.global?.activeLanguage === "en" ? "Linked-In" : "لينكد إن" }</span>
+              <span className="d-none d-sm-block">
+                {props.global?.activeLanguage === "en"
+                  ? "Linked-In"
+                  : "لينكد إن"}
+              </span>
             </ButtonTheme>
           </LinkedinShareButton>
           {/* {console.log("activeArticle ::",props.activeArticle)} */}
           <PinterestShareButton
-            media={props.activeArticle?.featured_img}
+            media={
+              process.env.REACT_APP_IMAGE_BASE_URL +
+              props.activeArticle?.featured_img
+            }
             url={`https://www.pigeonarabia.com/${props.global?.activeLanguage}/product/${props.activeArticle?._id}`}
             description={`Check out our latest products here:
                     \n
@@ -126,7 +137,9 @@ const MoreDetails = (props) => {
           >
             <ButtonTheme className="more-button">
               <FaPinterestP className="pinterest-icon" />
-              <span className="d-none d-sm-block">{props.global?.activeLanguage === "en" ? "Pinterest" : "بنترست" }</span>
+              <span className="d-none d-sm-block">
+                {props.global?.activeLanguage === "en" ? "Pinterest" : "بنترست"}
+              </span>
             </ButtonTheme>
           </PinterestShareButton>
         </div>

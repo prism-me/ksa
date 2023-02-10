@@ -85,7 +85,13 @@ function RecommendedSlider(props) {
                               : "عرض التفاصيل"}
                           </ButtonTheme>
                         </Link>
-                        <Image src={x.featured_img} hasMasterSpinner={true} />
+                        <Image
+                          src={
+                            process.env.REACT_APP_IMAGE_BASE_URL +
+                            x.featured_img
+                          }
+                          hasMasterSpinner={true}
+                        />
                         <p className="slide-title mb-0">
                           {props.isArabic ? x.arabic?.name || "" : x.name || ""}
                         </p>

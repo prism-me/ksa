@@ -34,7 +34,7 @@ const SecondTrimester = ({ data }) => {
           </Col>
           <Col sm={5}>
             <div className="image-wrap">
-              <img src={data?.featured_img} alt="Sickness" className="image" />
+              <img src={process.env.REACT_APP_IMAGE_BASE_URL + data?.featured_img} alt="Sickness" className="image" />
             </div>
           </Col>
         </Row>
